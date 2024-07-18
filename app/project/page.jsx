@@ -35,6 +35,40 @@ const projectsData = [
 		live: "",
 		github: "",
 	},
+	{
+		num: "02",
+		category: "Fullstack",
+		title: "Todo List",
+		description:
+			"a user-friendly application designed to help you efficiently manage your daily tasks and activities. Easily add, edit, and delete tasks to stay organized and productive.",
+		stack: [
+			{ name: "React.js" },
+			{ name: "Tailwind.css" },
+			{ name: "Javascript" },
+			{ name: "Node.js" },
+			{ name: "MongoDB" },
+		],
+		image: "/assets/work/thumb2.png",
+		live: "",
+		github: "",
+	},
+	{
+		num: "03",
+		category: "Game",
+		title: "Simon-game",
+		description:
+			"a unique e-commerce platform dedicated to spiritual jewelry. Alongside offering a wide range of enchanted accessories, it features horoscope readings and detailed astrological information for all zodiac signs, providing a holistic mystical shopping experience.",
+		stack: [
+			{ name: "React.js" },
+			{ name: "Tailwind.css" },
+			{ name: "Javascript" },
+			{ name: "Node.js" },
+			{ name: "MongoDB" },
+		],
+		image: "/assets/work/thumb3.png",
+		live: "",
+		github: "",
+	},
 	// ... (other projects)
 ];
 
@@ -51,7 +85,10 @@ const Project = () => {
 	return (
 		<motion.section
 			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
+			animate={{
+				opacity: 1,
+				transition: { delay: 2.4, duration: 0.4, ease: "easeIn" },
+			}}
 			className="min-h-[80vh]
             flex flex-col justify-center py-12 xl:px-0"
 		>
@@ -64,6 +101,9 @@ const Project = () => {
 							{currentProject.num}
 						</div>
 						{/* project category */}
+						<div className="text-8xl leading-none font-extrabold text-transparent text-outline">
+							{currentProject.title}
+						</div>
 						<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
 							{currentProject.category}project
 						</h2>
@@ -106,7 +146,7 @@ const Project = () => {
 												<BsGithub className="text-white text-3xl group-hover:text-accent" />
 											</TooltipTrigger>
 											<TooltipContent>
-												<p>Githob repository</p>
+												<p>Github repository</p>
 											</TooltipContent>
 										</Tooltip>
 									</TooltipProvider>
@@ -122,7 +162,23 @@ const Project = () => {
 							onSlideChange={handleSlideChange}
 						>
 							{projectsData.map((currentProject, index) => {
-								return <SwiperSlide key={index}>slide</SwiperSlide>;
+								return (
+									<SwiperSlide key={index} class="w-full">
+										<div className="h-[460px] relative group flex justify-center items-center bg-pink-50/20">
+											{/* overlay */}
+											<div></div>
+											{/* image */}
+											<div className="relative w-full h-full">
+												<Image
+													src={projectsData.image}
+													fill
+													className="object-cover"
+													alt=""
+												/>
+											</div>
+										</div>
+									</SwiperSlide>
+								);
 							})}
 						</Swiper>
 					</div>
