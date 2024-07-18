@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
+import "swiper/css/navigation";
 import { BsArrowRight, BsGithub } from "react-icons/bs";
 import {
 	Tooltip,
@@ -16,6 +17,7 @@ import {
 
 import Link from "next/link";
 import Image from "next/image";
+import WorkSliderBtns from "@/components/ui/WorkSliderBtns";
 
 const projectsData = [
 	{
@@ -161,25 +163,29 @@ const Project = () => {
 							className="xl:h-[520px] mb-12"
 							onSlideChange={handleSlideChange}
 						>
-							{projectsData.map((currentProject, index) => {
+							{projectsData.map((project, index) => {
 								return (
-									<SwiperSlide key={index} class="w-full">
+									<SwiperSlide key={index}>
 										<div className="h-[460px] relative group flex justify-center items-center bg-pink-50/20">
 											{/* overlay */}
-											<div></div>
+											<div className="absolute inset-0 bg-black/10 z-10"></div>
 											{/* image */}
 											<div className="relative w-full h-full">
 												<Image
-													src={projectsData.image}
+													src={project.image}
+													alt={project.title}
 													fill
 													className="object-cover"
-													alt=""
 												/>
 											</div>
 										</div>
 									</SwiperSlide>
 								);
 							})}
+							<WorkSliderBtns
+								containerStyles="flex gap-2 absolute right-0 bottom-[calc(50%_-_22px)] xl:bottom-0 z-20 w-full justify-between xl:w-max xl:justify-none"
+								btnStyles="bg-accent hover:bg-accent-hover text-primary text-[22px] w-[44px] h-[44px] flex justify-center items-center transition-all"
+							/>
 						</Swiper>
 					</div>
 				</div>
