@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@nextui-org/input";
+import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import {
 	Select,
@@ -81,6 +81,10 @@ const Contact = () => {
 								className="h-[200px]"
 								placeholder="Type your message here."
 							/>
+							{/* btn */}
+							<Button size="md" className="max-w-40">
+								Send message
+							</Button>
 						</form>
 					</div>
 					{/* info */}

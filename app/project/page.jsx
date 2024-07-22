@@ -21,7 +21,6 @@ import WorkSliderBtns from "@/components/ui/WorkSliderBtns";
 
 const projectsData = [
 	{
-		num: "01",
 		category: "Fullstack Web",
 		title: "Project Mutayloo",
 		description:
@@ -38,37 +37,6 @@ const projectsData = [
 		github: "",
 	},
 	{
-		num: "02",
-		category: "Frontend Web",
-		title: "Project Mutayloo",
-		description: "Simon-Game with React.js mini-project",
-		stack: [
-			{ name: "React.js" },
-			{ name: "Tailwind.css" },
-			{ name: "Javascript" },
-		],
-		image: "/assets/work/thumb1.png",
-		live: "",
-		github: "",
-	},
-	{
-		num: "03",
-		category: "Todo-list",
-		title: "Project Mutayloo",
-		description: "Todo-list with feature for tech-Lifestyle",
-		stack: [
-			{ name: "React.js" },
-			{ name: "Tailwind.css" },
-			{ name: "Javascript" },
-			{ name: "Node.js" },
-			{ name: "MongoDB" },
-		],
-		image: "/assets/work/thumb1.png",
-		live: "",
-		github: "",
-	},
-	{
-		num: "02",
 		category: "Fullstack",
 		title: "Todo List",
 		description:
@@ -85,7 +53,6 @@ const projectsData = [
 		github: "",
 	},
 	{
-		num: "03",
 		category: "Game",
 		title: "Simon-game",
 		description:
@@ -128,10 +95,6 @@ const Project = () => {
 				<div className="flex flex-col xl:flex-row xl:gap-[30px]">
 					<div className="w-full xl:w-[50%] xl:h-[460px] flex flex-col xl:justify-between order-2 xl:order-none"></div>
 					<div className="flex flex-col gap-[30px] h-[50%]">
-						{/* outline num */}
-						<div className="text-8xl leading-none font-extrabold text-transparent text-outline">
-							{currentProject.num}
-						</div>
 						{/* project category */}
 						<div className="text-8xl leading-none font-extrabold text-transparent text-outline">
 							{currentProject.title}
