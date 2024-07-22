@@ -2,9 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
+import { Textarea } from "@nextui-org/input";
 import { motion } from "framer-motion";
-
 import {
 	Select,
 	SelectContent,
@@ -31,7 +30,7 @@ const info = [
 	{
 		icon: <FaMapMarkerAlt />,
 		title: "Address",
-		description: "Bangplee,Samut-prakan 10540",
+		description: "Bangplee, Samut-prakan 10540",
 	},
 ];
 
@@ -50,38 +49,49 @@ const Contact = () => {
 					{/* form */}
 					<div className="xl:h-[54%] order-2 xl:order-none">
 						<form className="flex flex-col gap-6 p-10 bg-[#27272c] rounded-xl">
-							<h3 className="text4xl text-accent"> Let's work together </h3>
+							<h3 className="text-4xl text-accent"> Let's work together </h3>
 							<p className="text-white/60">
 								Lorem, ipsum dolor sit amet consectetur adipisicing elit.
 								Accusantium.
 							</p>
 							{/* input */}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<Input type="firstname" placeholder="Firstname" />
-								<Input type="lastname" placeholder="Lastname" />
+								<Input type="text" placeholder="Firstname" />
+								<Input type="text" placeholder="Lastname" />
 								<Input type="email" placeholder="Email" />
-								<Input type="phone" placeholder="Phone number" />
+								<Input type="tel" placeholder="Phone number" />
 							</div>
 							{/* select */}
 							<Select>
 								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Select a service" />
-									<SelectContent>
-										<SelectGroup>
-											<SelectLabel>Select a Service</SelectLabel>
-											<SelectItem value="est">Web Development</SelectItem>
-											<SelectItem value="cst">UX/UI Designer</SelectItem>
-											<SelectItem value="lst">Logo</SelectItem>
-											<SelectItem value="mst">Game Developer</SelectItem>
-										</SelectGroup>
-									</SelectContent>
 								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectLabel>Select a Service</SelectLabel>
+										<SelectItem value="web">Web Development</SelectItem>
+										<SelectItem value="uxui">UX/UI Designer</SelectItem>
+										<SelectItem value="logo">Logo</SelectItem>
+										<SelectItem value="game">Game Developer</SelectItem>
+									</SelectGroup>
+								</SelectContent>
 							</Select>
+							{/* textarea */}
+							<Textarea
+								className="h-[200px]"
+								placeholder="Type your message here."
+							/>
 						</form>
 					</div>
 					{/* info */}
 					<div className="flex-1 flex items-center xl:justify-end order-1 xl:order-none mb-8 xl:mb-0">
-						info
+						{info.map((item, index) => (
+							<div key={index} className="flex flex-col items-center">
+								{item.icon}
+								<h4 className="text-lg text-accent">{item.title}</h4>
+								<p className="text-white/60">{item.description}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
