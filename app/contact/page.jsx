@@ -89,13 +89,21 @@ const Contact = () => {
 					</div>
 					{/* info */}
 					<div className="flex-1 flex items-center xl:justify-end order-1 xl:order-none mb-8 xl:mb-0">
-						{info.map((item, index) => (
-							<div key={index} className="flex flex-col items-center">
-								{item.icon}
-								<h4 className="text-lg text-accent">{item.title}</h4>
-								<p className="text-white/60">{item.description}</p>
-							</div>
-						))}
+						<ul className="flex flex-col gap-10">
+							{info.map((item, index) => {
+								return (
+									<li key={index} className="flex items-center gap-6">
+										<div>
+											<div className=" text-accent">{item.icon}</div>
+										</div>
+										<div>
+											<p className=" text-accent">{item.title}</p>
+											<h3>{item.description}</h3>
+										</div>
+									</li>
+								);
+							})}
+						</ul>
 					</div>
 				</div>
 			</div>
