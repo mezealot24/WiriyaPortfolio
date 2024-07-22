@@ -33,11 +33,11 @@ const projectsData = [
 			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb1.png",
-		live: "",
-		github: "",
+		live: "wiriya-portfolio.vercel.app",
+		github: "https://github.com/mezealot24/projectmutayloov.2",
 	},
 	{
-		category: "Fullstack",
+		category: "Fullstack Web",
 		title: "Todo List",
 		description:
 			"a user-friendly application designed to help you efficiently manage your daily tasks and activities. Easily add, edit, and delete tasks to stay organized and productive.",
@@ -55,8 +55,7 @@ const projectsData = [
 	{
 		category: "Game",
 		title: "Simon-game",
-		description:
-			"a unique e-commerce platform dedicated to spiritual jewelry. Alongside offering a wide range of enchanted accessories, it features horoscope readings and detailed astrological information for all zodiac signs, providing a holistic mystical shopping experience.",
+		description: ".",
 		stack: [
 			{ name: "React.js" },
 			{ name: "Tailwind.css" },
