@@ -20,10 +20,10 @@ import Image from "next/image";
 const projectsData = [
 	{
 		num: "01",
-		category: "Fullstack",
+		category: "Fullstack Web",
 		title: "Project Mutayloo",
 		description:
-			"a unique e-commerce platform dedicated to spiritual jewelry. Alongside offering a wide range of enchanted accessories, it features horoscope readings and detailed astrological information for all zodiac signs, providing a holistic mystical shopping experience.",
+			"Project Mutayloo a unique e-commerce platform dedicated to spiritual jewelry. Alongside offering a wide range of enchanted accessories, it features horoscope readings and detailed astrological information for all zodiac signs, providing a holistic mystical shopping experience.",
 		stack: [
 			{ name: "React.js" },
 			{ name: "Tailwind.css" },
@@ -35,7 +35,36 @@ const projectsData = [
 		live: "",
 		github: "",
 	},
-	// ... (other projects)
+	{
+		num: "02",
+		category: "Frontend Web",
+		title: "Project Mutayloo",
+		description: "Simon-Game with React.js mini-project",
+		stack: [
+			{ name: "React.js" },
+			{ name: "Tailwind.css" },
+			{ name: "Javascript" },
+		],
+		image: "/assets/work/thumb1.png",
+		live: "",
+		github: "",
+	},
+	{
+		num: "03",
+		category: "Todo-list",
+		title: "Project Mutayloo",
+		description: "Todo-list with feature for tech-Lifestyle",
+		stack: [
+			{ name: "React.js" },
+			{ name: "Tailwind.css" },
+			{ name: "Javascript" },
+			{ name: "Node.js" },
+			{ name: "MongoDB" },
+		],
+		image: "/assets/work/thumb1.png",
+		live: "",
+		github: "",
+	},
 ];
 
 const Project = () => {
@@ -65,7 +94,7 @@ const Project = () => {
 						</div>
 						{/* project category */}
 						<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
-							{currentProject.category}project
+							{currentProject.category}
 						</h2>
 						{/* project description */}
 						<p className="text-white/60">{currentProject.description}</p>
