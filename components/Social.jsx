@@ -3,8 +3,11 @@ import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const socials = [
-	{ icon: <FaGithub />, path: "" },
-	{ icon: <FaLinkedin />, path: "" },
+	{ icon: <FaGithub />, path: "https://github.com/mezealot24" },
+	{
+		icon: <FaLinkedin />,
+		path: "https://www.linkedin.com/in/wiriya-onnompan-b7673a305/",
+	},
 ];
 
 const Social = ({ containerStyles, iconStyles }) => {

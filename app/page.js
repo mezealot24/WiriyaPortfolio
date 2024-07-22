@@ -28,6 +28,12 @@ export const Home = () => {
 								variant="outline"
 								size="lg"
 								className="uppercase flex items-center gap-2"
+								onClick={() =>
+									window.open(
+										"https://drive.google.com/uc?export=download&id=1O0nGn6nW7gEC0kissk5sCMZpT9td_UuA",
+										"_blank"
+									)
+								}
 							>
 								<span>Download CV</span>
 								<FiDownload className="text-xl" />
