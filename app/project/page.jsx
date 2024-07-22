@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
+import "swiper/css/navigation";
 import { BsArrowRight, BsGithub } from "react-icons/bs";
 import {
 	Tooltip,
@@ -16,6 +17,7 @@ import {
 
 import Link from "next/link";
 import Image from "next/image";
+import WorkSliderBtns from "@/components/ui/WorkSliderBtns";
 
 const projectsData = [
 	{
@@ -65,6 +67,41 @@ const projectsData = [
 		live: "",
 		github: "",
 	},
+	{
+		num: "02",
+		category: "Fullstack",
+		title: "Todo List",
+		description:
+			"a user-friendly application designed to help you efficiently manage your daily tasks and activities. Easily add, edit, and delete tasks to stay organized and productive.",
+		stack: [
+			{ name: "React.js" },
+			{ name: "Tailwind.css" },
+			{ name: "Javascript" },
+			{ name: "Node.js" },
+			{ name: "MongoDB" },
+		],
+		image: "/assets/work/thumb2.png",
+		live: "",
+		github: "",
+	},
+	{
+		num: "03",
+		category: "Game",
+		title: "Simon-game",
+		description:
+			"a unique e-commerce platform dedicated to spiritual jewelry. Alongside offering a wide range of enchanted accessories, it features horoscope readings and detailed astrological information for all zodiac signs, providing a holistic mystical shopping experience.",
+		stack: [
+			{ name: "React.js" },
+			{ name: "Tailwind.css" },
+			{ name: "Javascript" },
+			{ name: "Node.js" },
+			{ name: "MongoDB" },
+		],
+		image: "/assets/work/thumb3.png",
+		live: "",
+		github: "",
+	},
+	// ... (other projects)
 ];
 
 const Project = () => {
@@ -80,7 +117,10 @@ const Project = () => {
 	return (
 		<motion.section
 			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
+			animate={{
+				opacity: 1,
+				transition: { delay: 2.4, duration: 0.4, ease: "easeIn" },
+			}}
 			className="min-h-[80vh]
             flex flex-col justify-center py-12 xl:px-0"
 		>
@@ -93,6 +133,9 @@ const Project = () => {
 							{currentProject.num}
 						</div>
 						{/* project category */}
+						<div className="text-8xl leading-none font-extrabold text-transparent text-outline">
+							{currentProject.title}
+						</div>
 						<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
 							{currentProject.category}
 						</h2>
@@ -135,7 +178,7 @@ const Project = () => {
 												<BsGithub className="text-white text-3xl group-hover:text-accent" />
 											</TooltipTrigger>
 											<TooltipContent>
-												<p>Githob repository</p>
+												<p>Github repository</p>
 											</TooltipContent>
 										</Tooltip>
 									</TooltipProvider>
@@ -150,9 +193,29 @@ const Project = () => {
 							className="xl:h-[520px] mb-12"
 							onSlideChange={handleSlideChange}
 						>
-							{projectsData.map((currentProject, index) => {
-								return <SwiperSlide key={index}>slide</SwiperSlide>;
+							{projectsData.map((project, index) => {
+								return (
+									<SwiperSlide key={index}>
+										<div className="h-[460px] relative group flex justify-center items-center bg-pink-50/20">
+											{/* overlay */}
+											<div className="absolute inset-0 bg-black/10 z-10"></div>
+											{/* image */}
+											<div className="relative w-full h-full">
+												<Image
+													src={project.image}
+													alt={project.title}
+													fill
+													className="object-cover"
+												/>
+											</div>
+										</div>
+									</SwiperSlide>
+								);
 							})}
+							<WorkSliderBtns
+								containerStyles="flex gap-2 absolute right-0 bottom-[calc(50%_-_22px)] xl:bottom-0 z-20 w-full justify-between xl:w-max xl:justify-none"
+								btnStyles="bg-accent hover:bg-accent-hover text-primary text-[22px] w-[44px] h-[44px] flex justify-center items-center transition-all"
+							/>
 						</Swiper>
 					</div>
 				</div>
