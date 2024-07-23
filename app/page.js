@@ -4,6 +4,7 @@ import { FiDownload } from "react-icons/fi";
 //components
 import Social from "@/components/Social";
 import Photo from "@/components/Photo";
+import DownloadButton from "@/components/ui/DownloadButton";
 
 export const Home = () => {
 	return (
@@ -24,20 +25,10 @@ export const Home = () => {
 						</p>
 						{/* btn and socials */}
 						<div className="flex flex-col xl:flex-row items-center gap-8">
-							<Button
-								variant="outline"
-								size="lg"
-								className="uppercase flex items-center gap-2"
-								onClick={() =>
-									window.open(
-										"https://drive.google.com/uc?export=download&id=1O0nGn6nW7gEC0kissk5sCMZpT9td_UuA",
-										"_blank"
-									)
-								}
-							>
+							<DownloadButton>
 								<span>Download CV</span>
 								<FiDownload className="text-xl" />
-							</Button>
+							</DownloadButton>
 							<div className="mb-8 xl:mb-0">
 								<Social
 									containerStyles="flex gap-6"

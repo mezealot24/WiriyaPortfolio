@@ -109,7 +109,7 @@ const Project = () => {
 								return (
 									<li key={index} className="text-xl text-accent">
 										{item.name}
-										{/* remove the last comma */}
+
 										{index !== currentProject.stack.length - 1 && ","}
 									</li>
 								);
