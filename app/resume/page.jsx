@@ -26,7 +26,7 @@ import { motion } from "framer-motion";
 const about = {
 	title: "About me",
 	description:
-		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nisi quis simi",
+		"Developing full-stack solutions with user-focused precision and innovative acoustic rock harmonies.",
 	info: [
 		{
 			fieldName: "Name",
@@ -60,7 +60,7 @@ const experience = {
 	icon: "/assests/resume/badge.svg",
 	title: "My experience",
 	description:
-		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nisi quis simi.",
+		"Passionate full-stack developer with a unique blend of tech and creative skills. I bring fresh energy, adaptability, and a keen eye for user experience. Committed to clear communication, team collaboration, and continuous learning to drive efficient solutions.",
 	items: [
 		{
 			company: "Generation Thailand",
@@ -84,7 +84,7 @@ const education = {
 	icon: "/assets/resume/cap.svg",
 	title: "My education",
 	description:
-		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nisi quis simi.",
+		"Embracing lifelong learning, my educational journey reflects adaptability and passion for growth. From computer science foundations to specialized tech bootcamps, each step has shaped my diverse skill set, proving that meaningful learning knows no time boundaries.",
 	items: [
 		{
 			institution: "Generation Thailand",
@@ -106,8 +106,7 @@ const education = {
 
 const skills = {
 	title: "My skills",
-	description:
-		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nisi quis simi.",
+	description: "A showcase of my technical expertise and proficiency.",
 	skillList: [
 		{
 			icon: <FaHtml5 />,

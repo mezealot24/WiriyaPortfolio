@@ -10,28 +10,28 @@ const services = [
 		num: "01",
 		title: "Web Development",
 		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit, dolores facere facilis mollitia dolorem voluptatibus enim neque.",
+			"I build websites using MERN stack. My projects include an e-commerce site for spiritual jewelry and a zodiac-based fortune-telling system. Let's create a website that fits your needs!",
 		href: "",
 	},
 	{
 		num: "02",
 		title: "UX/UI Designer",
 		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit, dolores facere facilis mollitia dolorem voluptatibus enim neque.",
+			"I design user-friendly interfaces. My background in music helps me create designs that look good and feel intuitive, like in my zodiac suggestion feature.",
 		href: "",
 	},
 	{
 		num: "03",
 		title: "Logo Design",
 		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit, dolores facere facilis mollitia dolorem voluptatibus enim neque.",
+			"I create simple but effective logos. My experience in music and spiritual jewelry helps me design logos that capture the essence of your brand.",
 		href: "",
 	},
 	{
 		num: "04",
-		title: "Game Designer",
+		title: "Interactive Web Apps",
 		description:
-			"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit, dolores facere facilis mollitia dolorem voluptatibus enim neque.",
+			"I create fun web applications. One of my projects is a Simon game. I can also make engaging apps like zodiac-based suggestion systems that users will enjoy.",
 		href: "",
 	},
 ];
