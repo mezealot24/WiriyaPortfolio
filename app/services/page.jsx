@@ -18,7 +18,7 @@ const services = [
 		title: "UX/UI Designer",
 		description:
 			"I design user-friendly interfaces. My background in music helps me create designs that look good and feel intuitive, like in my zodiac suggestion feature.",
-		href: "",
+		href: "https://www.figma.com/design/iSjRloi1PoQsfTCcL3Iznf/Mutayloo-%7C-old-design?node-id=356-2007&t=pMvv5YRiVeUkST5O-1",
 	},
 	{
 		num: "03",
