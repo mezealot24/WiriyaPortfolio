@@ -33,7 +33,7 @@ const projectsData = [
 			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb1.png",
-		live: "wiriya-portfolio.vercel.app",
+		live: "https://projectmutayloov2-wiriyas-projects.vercel.app/",
 		github: "https://github.com/mezealot24/projectmutayloov.2",
 	},
 	{
