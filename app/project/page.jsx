@@ -42,15 +42,15 @@ const projectsData = [
 		description:
 			"a user-friendly application designed to help you efficiently manage your daily tasks and activities. Easily add, edit, and delete tasks to stay organized and productive.",
 		stack: [
-			{ name: "React.js" },
+			{ name: "Next.js" },
 			{ name: "Tailwind.css" },
-			{ name: "Javascript" },
+			{ name: "TypeScript" },
 			{ name: "Node.js" },
 			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb2.png",
-		live: "",
-		github: "",
+		live: "https://todolist-v10-eklx9fwpv-wiriyas-projects.vercel.app/",
+		github: "https://github.com/mezealot24/Todo-RockinTask",
 	},
 	{
 		category: "Game",
