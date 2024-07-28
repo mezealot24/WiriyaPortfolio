@@ -19,9 +19,9 @@ export const Home = () => {
 							<span className="text-accent">Wiriya Onnompan</span>
 						</h1>
 						<p className="max-w-[500px] mb-10 text-white/80">
-							I'm an artist with development and management skills. My 10 years
-							as a guitarist taught me creativity. I build user-friendly
-							websites and apps, mixing my artistic know-how.
+							I'm an artist with development and management skills. combining a
+							decade of guitar experience with creativity to build user-friendly
+							websites and applications, mixing my artistic know-how.
 						</p>
 						{/* btn and socials */}
 						<div className="flex flex-col xl:flex-row items-center gap-8">
