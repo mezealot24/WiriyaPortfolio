@@ -54,14 +54,12 @@ const projectsData = [
 	},
 	{
 		category: "Game",
-		title: "Simon-game",
-		description: ".",
+		title: "-game",
+		description: "Simon Game",
 		stack: [
 			{ name: "React.js" },
 			{ name: "Tailwind.css" },
 			{ name: "Javascript" },
-			{ name: "Node.js" },
-			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb3.png",
 		live: "",
