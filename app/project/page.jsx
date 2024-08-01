@@ -30,7 +30,7 @@ const projectsData = [
 			{ name: "Tailwind.css" },
 			{ name: "Javascript" },
 			{ name: "Node.js" },
-			{ name: "MongoDB" },
+			{ name: "PostgreSQL" },
 		],
 		image: "/assets/work/thumb1.png",
 		live: "https://projectmutayloov2-wiriyas-projects.vercel.app/",
@@ -54,7 +54,7 @@ const projectsData = [
 	},
 	{
 		category: "Game",
-		title: "-game",
+		title: "Simon-game",
 		description: "Simon Game",
 		stack: [
 			{ name: "React.js" },
