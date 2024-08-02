@@ -30,7 +30,7 @@ const projectsData = [
 			{ name: "Tailwind.css" },
 			{ name: "Javascript" },
 			{ name: "Node.js" },
-			{ name: "PostgreSQL" },
+			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb1.png",
 		live: "https://projectmutayloov2-wiriyas-projects.vercel.app/",
@@ -46,7 +46,7 @@ const projectsData = [
 			{ name: "Tailwind.css" },
 			{ name: "TypeScript" },
 			{ name: "Node.js" },
-			{ name: "MongoDB" },
+			{ name: "PostgreSQL" },
 		],
 		image: "/assets/work/thumb2.png",
 		live: "https://todolist-v10-eklx9fwpv-wiriyas-projects.vercel.app/",
@@ -62,8 +62,8 @@ const projectsData = [
 			{ name: "Javascript" },
 		],
 		image: "/assets/work/thumb3.png",
-		live: "",
-		github: "",
+		live: "https://deploysimongame.vercel.app/",
+		github: "https://github.com/mezealot24/Simon-Game",
 	},
 	// ... (other projects)
 ];
