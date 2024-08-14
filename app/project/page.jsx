@@ -49,7 +49,7 @@ const projectsData = [
 			{ name: "PostgreSQL" },
 		],
 		image: "/assets/work/thumb2.png",
-		live: "https://todolist-v10-eklx9fwpv-wiriyas-projects.vercel.app/",
+		live: "https://todorock-frontend-deploy.vercel.app/",
 		github: "https://github.com/mezealot24/Todo-RockinTask",
 	},
 	{
