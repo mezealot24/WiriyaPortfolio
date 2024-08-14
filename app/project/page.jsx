@@ -50,7 +50,7 @@ const projectsData = [
 		],
 		image: "/assets/work/thumb2.png",
 		live: "https://todorock-frontend-deploy.vercel.app/",
-		github: "https://github.com/mezealot24/Todo-RockinTask",
+		github: "https://github.com/mezealot24/todorock-frontend-deploy",
 	},
 	{
 		category: "Game",
