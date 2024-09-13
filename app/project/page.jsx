@@ -53,7 +53,7 @@ const projectsData = [
 		github: "https://github.com/mezealot24/todorock-frontend-deploy",
 	},
 	{
-		category: "Game",
+		category: "Web Application",
 		title: "Quiz-game",
 		description:
 			"Quiz-Web Application that allows users to test their knowledge on various topics. It provides a fun and interactive way to learn and improve your skills.",
@@ -61,7 +61,9 @@ const projectsData = [
 		stack: [
 			{ name: "Next.js" },
 			{ name: "Tailwind.css" },
+			{ name: "Typesctipt" },
 			{ name: "Javascript" },
+			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb3.png",
 		live: "https://silicon-warin-quiz-game.vercel.app/",
@@ -92,59 +94,60 @@ const Project = () => {
 		>
 			<div className="container mx-auto">
 				<div className="flex flex-col xl:flex-row xl:gap-[30px]">
-					<div className="w-full xl:w-[50%] xl:h-[460px] flex flex-col xl:justify-between order-2 xl:order-none"></div>
-					<div className="flex flex-col gap-[30px] h-[50%]">
-						{/* project category */}
-						<div className="text-8xl leading-none font-extrabold text-transparent text-outline">
-							{currentProject.title}
-						</div>
-						<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
-							{currentProject.category}
-						</h2>
-						{/* project description */}
-						<p className="text-white/60">{currentProject.description}</p>
-						{/* stack */}
-						<ul className="flex gap-4">
-							{currentProject.stack.map((item, index) => {
-								return (
-									<li key={index} className="text-xl text-accent">
-										{item.name}
+					<div className="w-full xl:w-[50%] xl:h-[460px] flex flex-col xl:justify-between order-2 xl:order-none">
+						<div className="flex flex-col gap-[30px] h-[50%]">
+							{/* project category */}
+							<div className="text-8xl leading-none font-extrabold text-transparent text-outline">
+								{currentProject.title}
+							</div>
+							<h2 className="text-[42px] font-bold leading-none text-white group-hover:text-accent transition-all duration-500 capitalize">
+								{currentProject.category}
+							</h2>
+							{/* project description */}
+							<p className="text-white/60">{currentProject.description}</p>
+							{/* stack */}
+							<ul className="flex gap-4">
+								{currentProject.stack.map((item, index) => {
+									return (
+										<li key={index} className="text-xl text-accent">
+											{item.name}
 
-										{index !== currentProject.stack.length - 1 && ","}
-									</li>
-								);
-							})}
-						</ul>
-						{/* border */}
-						<div className="border border-white/20"></div>
-						{/* button live*/}
-						<div className="flex items-center gap-4">
-							<Link href={currentProject.live}>
-								<TooltipProvider delayDuration={100}>
-									<Tooltip>
-										<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
-											<BsArrowRight className="text-white text-3xl group-hover:text-accent transform -rotate-45 transition-transform duration-300 ease-in-out" />
-										</TooltipTrigger>
-										<TooltipContent>
-											<p>Live project</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
-							</Link>
-							{/*button github*/}
-							<div>
-								<Link href={currentProject.github}>
+											{index !== currentProject.stack.length - 1 && ","}
+										</li>
+									);
+								})}
+							</ul>
+							{/* border */}
+							<div className="border border-white/20"></div>
+							{/* button live*/}
+							<div className="flex items-center gap-4">
+								<Link href={currentProject.live}>
 									<TooltipProvider delayDuration={100}>
 										<Tooltip>
 											<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
-												<BsGithub className="text-white text-3xl group-hover:text-accent" />
+												<BsArrowRight className="text-white text-3xl group-hover:text-accent transform -rotate-45 transition-transform duration-300 ease-in-out" />
 											</TooltipTrigger>
 											<TooltipContent>
-												<p>Github repository</p>
+												<p>Live project</p>
 											</TooltipContent>
 										</Tooltip>
 									</TooltipProvider>
 								</Link>
+								{/*button github*/}
+								<div>
+									<Link href={currentProject.github}>
+										<TooltipProvider delayDuration={100}>
+											<Tooltip>
+												<TooltipTrigger className="w-[70px] h-[70px] rounded-full bg-white/5 flex justify-center items-center group">
+													<BsGithub className="text-white text-3xl group-hover:text-accent" />
+												</TooltipTrigger>
+												<TooltipContent>
+													<p>Github repository</p>
+												</TooltipContent>
+											</Tooltip>
+										</TooltipProvider>
+									</Link>
+								</div>
 							</div>
 						</div>
 					</div>
