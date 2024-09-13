@@ -54,16 +54,18 @@ const projectsData = [
 	},
 	{
 		category: "Game",
-		title: "Simon-game",
-		description: "Simon Game",
+		title: "Quiz-game",
+		description:
+			"Quiz-Web Application that allows users to test their knowledge on various topics. It provides a fun and interactive way to learn and improve your skills.",
+
 		stack: [
-			{ name: "React.js" },
+			{ name: "Next.js" },
 			{ name: "Tailwind.css" },
 			{ name: "Javascript" },
 		],
 		image: "/assets/work/thumb3.png",
-		live: "https://deploysimongame.vercel.app/",
-		github: "https://github.com/mezealot24/Simon-Game",
+		live: "https://silicon-warin-quiz-game.vercel.app/",
+		github: "https://github.com/mezealot24/Quiz-Game",
 	},
 	// ... (other projects)
 ];
