@@ -106,10 +106,13 @@ const Project = () => {
 							{/* project description */}
 							<p className="text-white/60">{currentProject.description}</p>
 							{/* stack */}
-							<ul className="flex gap-4">
+							<ul className="flex flex-wrap gap-2">
 								{currentProject.stack.map((item, index) => {
 									return (
-										<li key={index} className="text-xl text-accent">
+										<li
+											key={index}
+											className="text-xl text-accent bg-white/5 px-3 py-1 rounded-full"
+										>
 											{item.name}
 
 											{index !== currentProject.stack.length - 1 && ","}
