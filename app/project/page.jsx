@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-
 import "swiper/css/navigation";
+
 import { BsArrowRight, BsGithub } from "react-icons/bs";
 import {
 	Tooltip,
@@ -73,6 +73,7 @@ const projectsData = [
 
 const Project = () => {
 	const [currentProject, setCurrentProject] = useState(projectsData[0]);
+	const swiperRef = useRef(null);
 
 	const handleSlideChange = (swiper) => {
 		const currentIndex = swiper.activeIndex;
@@ -90,34 +91,51 @@ const Project = () => {
 		>
 			<div className="container mx-auto">
 				<div className="flex flex-col lg:flex-row lg:gap-8">
-					{/* Swiper component - now at the top for mobile */}
+					{/* Swiper component */}
 					<div className="w-full lg:w-1/2 lg:order-2 mb-8 lg:mb-0">
-						<Swiper
-							spaceBetween={30}
-							slidesPerView={1}
-							className="h-[300px] sm:h-[400px] lg:h-[520px]"
-							onSlideChange={handleSlideChange}
-						>
-							{projectsData.map((project, index) => (
-								<SwiperSlide key={index}>
-									<div className="h-full relative group flex justify-center items-center bg-pink-50/20">
-										<div className="absolute inset-0 bg-black/10 z-10"></div>
-										<div className="relative w-full h-full">
-											<Image
-												src={project.image}
-												alt={project.title}
-												fill
-												className="object-cover"
-											/>
+						<div className="relative">
+							<Swiper
+								onSwiper={(swiper) => {
+									swiperRef.current = swiper;
+								}}
+								spaceBetween={30}
+								slidesPerView={1}
+								className="h-[300px] sm:h-[400px] lg:h-[520px]"
+								onSlideChange={handleSlideChange}
+							>
+								{projectsData.map((project, index) => (
+									<SwiperSlide key={index}>
+										<div className="h-full relative group flex justify-center items-center bg-pink-50/20">
+											<div className="absolute inset-0 bg-black/10 z-10"></div>
+											<div className="relative w-full h-full">
+												<Image
+													src={project.image}
+													alt={project.title}
+													fill
+													className="object-cover"
+												/>
+											</div>
 										</div>
-									</div>
-								</SwiperSlide>
-							))}
+									</SwiperSlide>
+								))}
+							</Swiper>
+							{/* WorkSliderBtns for mobile */}
+							<div className="lg:hidden">
+								<WorkSliderBtns
+									containerStyles="flex gap-2 absolute right-0 bottom-[calc(50%_-_22px)] z-20 w-full justify-between"
+									btnStyles="bg-accent hover:bg-accent-hover text-primary text-[22px] w-[44px] h-[44px] flex justify-center items-center transition-all"
+									swiperRef={swiperRef}
+								/>
+							</div>
+						</div>
+						{/* WorkSliderBtns for desktop */}
+						<div className="hidden lg:flex flex-end justify-between items-center mt-4">
 							<WorkSliderBtns
-								containerStyles="flex gap-2 absolute right-0 bottom-0 z-20 w-full justify-between lg:w-max lg:justify-end"
-								btnStyles="bg-accent hover:bg-accent-hover text-primary text-lg sm:text-xl w-10 h-10 sm:w-12 sm:h-12 flex justify-center items-center transition-all"
+								containerStyles="flex gap-4"
+								btnStyles="bg-accent hover:bg-accent-hover text-primary text-[22px] w-[44px] h-[44px] flex justify-center items-center transition-all"
+								swiperRef={swiperRef}
 							/>
-						</Swiper>
+						</div>
 					</div>
 
 					{/* Text content - now below the Swiper for mobile */}
