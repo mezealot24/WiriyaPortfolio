@@ -35,7 +35,7 @@ const projectsData = [
 		live: "https://projectmutayloov2-wiriyas-projects.vercel.app/",
 		github: "https://github.com/mezealot24/projectmutayloov.2",
 	},
-	{
+	/* {
 		category: "Web Application",
 		title: "Todo List",
 		description:
@@ -50,7 +50,7 @@ const projectsData = [
 		image: "/assets/work/thumb2.png",
 		live: "https://todorock-frontend-deploy.vercel.app/",
 		github: "https://github.com/mezealot24/todorock-frontend-deploy",
-	},
+	}, */
 	{
 		category: "Web Application",
 		title: "Quiz Game",
