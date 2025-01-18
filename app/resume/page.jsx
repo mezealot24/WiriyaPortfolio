@@ -9,7 +9,7 @@ import {
 	FaNodeJs,
 	FaJava,
 } from "react-icons/fa";
-import { SiTailwindcss, SiNextdotjs } from "react-icons/si";
+import { SiTailwindcss, SiNextdotjs, SiPostgresql } from "react-icons/si";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -63,9 +63,19 @@ const experience = {
 		"Passionate full-stack developer with a unique blend of tech and creative skills. I bring fresh energy, adaptability, and a keen eye for user experience. Committed to clear communication, team collaboration, and continuous learning to drive efficient solutions.",
 	items: [
 		{
+			company: "Namyong Chemical industry",
+			position: "IT Support Specialist",
+			duration: "2024-Present",
+		},
+		{
+			company: "Freelance",
+			position: "Full Stack Developer",
+			duration: "2024-2025",
+		},
+		{
 			company: "Generation Thailand",
 			position: "Full Stack Developer",
-			duration: "Present",
+			duration: "2024",
 		},
 		{
 			company: "Anothai Service CO, LTD",
@@ -139,6 +149,14 @@ const skills = {
 		{
 			icon: <FaJava />,
 			name: "java",
+		},
+		{
+			icon: <SiNextdotjs />,
+			name: "next.js",
+		},
+		{
+			icon: <SiPostgresql />,
+			name: "PostgreSQL",
 		},
 	],
 };
