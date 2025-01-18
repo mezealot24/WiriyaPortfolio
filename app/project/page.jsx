@@ -20,6 +20,22 @@ import WorkSliderBtns from "@/components/ui/WorkSliderBtns";
 
 const projectsData = [
 	{
+		category: "Web Application",
+		title: "Quiz Game",
+		description:
+			"Quiz game is a fun and interactive way to test your knowledge and have a good time. It's a great way to challenge yourself and learn something new.",
+		stack: [
+			{ name: "Next.js" },
+			{ name: "Tailwind.css" },
+			{ name: "TypeScript" },
+			{ name: "Node.js" },
+			{ name: "MongoDB" },
+		],
+		image: "/assets/work/thumb3.png",
+		live: "https://silicon-warin-quiz-game.vercel.app/",
+		github: "https://github.com/mezealot24/Quiz-Game",
+	},
+	{
 		category: "Web E-Commerce",
 		title: "Mutayloo",
 		description:
@@ -51,22 +67,7 @@ const projectsData = [
 		live: "https://todorock-frontend-deploy.vercel.app/",
 		github: "https://github.com/mezealot24/todorock-frontend-deploy",
 	}, */
-	{
-		category: "Web Application",
-		title: "Quiz Game",
-		description:
-			"Quiz game is a fun and interactive way to test your knowledge and have a good time. It's a great way to challenge yourself and learn something new.",
-		stack: [
-			{ name: "Next.js" },
-			{ name: "Tailwind.css" },
-			{ name: "TypeScript" },
-			{ name: "Node.js" },
-			{ name: "MongoDB" },
-		],
-		image: "/assets/work/thumb3.png",
-		live: "https://silicon-warin-quiz-game.vercel.app/",
-		github: "https://github.com/mezealot24/Quiz-Game",
-	},
+
 	// ... (other projects)
 ];
 
