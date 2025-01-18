@@ -32,7 +32,7 @@ const projectsData = [
 			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb3.png",
-		live: "https://www.kruearth.net/",
+		live: "https://quiz-hub-delta.vercel.app/",
 		github: "https://github.com/mezealot24/Quiz-Game",
 	},
 	{
