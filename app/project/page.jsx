@@ -32,7 +32,7 @@ const projectsData = [
 			{ name: "MongoDB" },
 		],
 		image: "/assets/work/thumb3.png",
-		live: "https://silicon-warin-quiz-game.vercel.app/",
+		live: "https://www.kruearth.net/",
 		github: "https://github.com/mezealot24/Quiz-Game",
 	},
 	{
