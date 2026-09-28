@@ -1,0 +1,14 @@
+---
+interface Props {
+  size?: "md" | "lg";
+  byline?: boolean;
+  href?: string;
+}
+
+const { size = "md", byline = false, href } = Astro.props;
+const Tag = href ? "a" : "span";
+---
+
+<Tag class:list={["wr-wordmark", { "wr-wordmark--lg": size === "lg" }]} href={href} lang="en">
+  Silicon Warin<span class="wr-wordmark__dot">.</span>{byline && <span class="wr-wordmark__by">by QQ</span>}
+</Tag>

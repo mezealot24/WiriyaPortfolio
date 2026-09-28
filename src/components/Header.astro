@@ -1,0 +1,99 @@
+---
+import { localePath, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+import { lineHref, lineUrl } from "@/site";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import LangSwitch from "./LangSwitch.astro";
+import Wordmark from "./Wordmark.astro";
+
+interface Props {
+  locale: Locale;
+  alternate: string;
+}
+
+const { locale, alternate } = Astro.props;
+const t = useTranslations(locale);
+const here = Astro.url.pathname;
+
+const links = [
+  { href: localePath(locale, "services"), label: t("nav.services") },
+  { href: localePath(locale, "work"), label: t("nav.work") },
+  { href: localePath(locale, "blog"), label: t("nav.blog") },
+  { href: localePath(locale, "contact"), label: t("nav.contact") },
+];
+const current = (href: string): "page" | undefined => (here.startsWith(href) ? "page" : undefined);
+---
+
+<div class="wr-container">
+  <header class="wr-header">
+    <Wordmark href={localePath(locale)} />
+    <div class="wr-header__side">
+      <nav class="wr-nav" aria-label={t("a11y.mainNav")}>
+        {links.map((link) => <a class="wr-nav__link" href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
+      </nav>
+      <LangSwitch locale={locale} alternate={alternate} />
+      <button class="wr-iconbtn wr-theme" type="button" aria-label={t("a11y.theme")} data-theme-toggle>
+        <Icon name="moon" class="wr-icon--moon" />
+        <Icon name="sun" class="wr-icon--sun" />
+      </button>
+      <Button variant="accent" href={lineHref(locale)} external={lineUrl !== undefined}>{t("cta.line")}</Button>
+      <button class="wr-iconbtn" type="button" aria-label={t("a11y.openMenu")} aria-controls="wr-menu" aria-expanded="false" data-menu-open>
+        <Icon name="menu" />
+      </button>
+    </div>
+  </header>
+</div>
+
+<div class="wr-menu" id="wr-menu" hidden>
+  <div class="wr-menu__top">
+    <Wordmark href={localePath(locale)} />
+    <button class="wr-iconbtn" type="button" aria-label={t("a11y.closeMenu")} data-menu-close>
+      <Icon name="x" />
+    </button>
+  </div>
+  <nav class="wr-menu__nav" aria-label={t("a11y.mainNav")}>
+    {links.map((link) => <a href={link.href} aria-current={current(link.href)}>{link.label}</a>)}
+    <a href={localePath(locale, "about")}>{t("nav.about")}</a>
+  </nav>
+  <LangSwitch locale={locale} alternate={alternate} />
+  <div>
+    <Button variant="accent" size="md" href={lineHref(locale)} external={lineUrl !== undefined}>{t("cta.line")}</Button>
+  </div>
+</div>
+
+<script>
+  const setup = (): void => {
+    const menu = document.getElementById("wr-menu");
+    const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+    const closeButton = document.querySelector<HTMLButtonElement>("[data-menu-close]");
+    if (menu && openButton && closeButton) {
+      const close = (): void => {
+        menu.hidden = true;
+        openButton.setAttribute("aria-expanded", "false");
+        openButton.focus();
+      };
+      openButton.addEventListener("click", () => {
+        menu.hidden = false;
+        openButton.setAttribute("aria-expanded", "true");
+        closeButton.focus();
+      });
+      closeButton.addEventListener("click", close);
+      menu.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") close();
+      });
+    }
+
+    document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+      const next = document.documentElement.dataset["theme"] === "light" ? "dark" : "light";
+      document.documentElement.dataset["theme"] = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {
+        // Storage can be blocked; the choice then lasts for this page only.
+      }
+    });
+  };
+
+  setup();
+</script>

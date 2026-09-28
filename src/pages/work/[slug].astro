@@ -1,0 +1,12 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import WorkDetail from "@/views/WorkDetail.astro";
+import { pathsFor } from "@/i18n/content";
+
+export const getStaticPaths = (() => pathsFor("work", "th")) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { entry } = Astro.props as Props;
+---
+
+<WorkDetail locale="th" entry={entry} />

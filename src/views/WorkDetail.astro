@@ -1,0 +1,81 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import PageHead from "@/components/PageHead.astro";
+import Tags from "@/components/Tags.astro";
+import Base from "@/layouts/Base.astro";
+import { entriesFor, hasTranslation, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+import { article, breadcrumbs } from "@/lib/schema";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"work">;
+}
+
+const { locale, entry } = Astro.props;
+const t = useTranslations(locale);
+const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const slug = slugOf(entry.id);
+const path = localePath(locale, `work/${slug}`);
+const other = otherLocale(locale);
+const translation = (await hasTranslation("work", other, slug)) ? localePath(other, `work/${slug}`) : undefined;
+const { Content } = await render(entry);
+const services = await entriesFor("services", locale);
+const usedService = services.find((s) => slugOf(s.id) === entry.data.service);
+
+const crumbs = [
+  { name: t("nav.home"), path: localePath(locale) },
+  { name: t("nav.work"), path: localePath(locale, "work") },
+  { name: entry.data.title, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={entry.data.seo.title}
+  description={entry.data.seo.description}
+  translation={translation}
+  type="article"
+  schema={[article(site, locale, "Article", path, entry.data.title, entry.data.seo.description), breadcrumbs(site, crumbs)]}
+>
+  <div class="wr-container">
+    <PageHead title={entry.data.title} lead={entry.data.summary} crumbs={crumbs} crumbsLabel={t("a11y.breadcrumb")}>
+      <p class="wr-meta">
+        <span>{entry.data.year}</span>
+        <span>{entry.data.industry}</span>
+        {entry.data.anonymized && <span>{t("work.anonymized")}</span>}
+      </p>
+    </PageHead>
+
+    <div class="wr-detail">
+      <article class="wr-prose">
+        <Content />
+      </article>
+      <aside class="wr-detail__aside">
+        <div class="wr-aside">
+          <div class="wr-aside__block">
+            <p class="wr-eyebrow">{t("work.role")}</p>
+            <p>{entry.data.role}</p>
+          </div>
+          <div class="wr-aside__block">
+            <p class="wr-eyebrow">{t("work.stack")}</p>
+            <Tags items={entry.data.stack} />
+          </div>
+          {
+            usedService && (
+              <div class="wr-aside__block">
+                <p class="wr-eyebrow">{t("work.services")}</p>
+                <p>
+                  <a class="wr-link" href={localePath(locale, `services/${slugOf(usedService.id)}`)}>
+                    {usedService.data.title}
+                  </a>
+                </p>
+              </div>
+            )
+          }
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>

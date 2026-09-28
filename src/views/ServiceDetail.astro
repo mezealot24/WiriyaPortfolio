@@ -1,0 +1,119 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Button from "@/components/Button.astro";
+import Icon from "@/components/Icon.astro";
+import PageHead from "@/components/PageHead.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ServiceRow from "@/components/ServiceRow.astro";
+import WorkRow from "@/components/WorkRow.astro";
+import Base from "@/layouts/Base.astro";
+import { hasTranslation, postsFor, slugOf, workFor } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+import { breadcrumbs, service } from "@/lib/schema";
+import { lineHref, lineUrl } from "@/site";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"services">;
+}
+
+const { locale, entry } = Astro.props;
+const t = useTranslations(locale);
+const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const slug = slugOf(entry.id);
+const path = localePath(locale, `services/${slug}`);
+const other = otherLocale(locale);
+const translation = (await hasTranslation("services", other, slug)) ? localePath(other, `services/${slug}`) : undefined;
+const { Content } = await render(entry);
+const [allWork, allPosts] = await Promise.all([workFor(locale), postsFor(locale)]);
+const related = allWork.filter((w) => w.data.service === slug);
+const posts = allPosts.filter((p) => p.data.relatedService === slug);
+
+const crumbs = [
+  { name: t("nav.home"), path: localePath(locale) },
+  { name: t("nav.services"), path: localePath(locale, "services") },
+  { name: entry.data.title, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={entry.data.seo.title}
+  description={entry.data.seo.description}
+  translation={translation}
+  schema={[service(site, locale, path, entry.data.title, entry.data.seo.description), breadcrumbs(site, crumbs)]}
+>
+  <div class="wr-container">
+    <PageHead title={entry.data.title} lead={entry.data.summary} crumbs={crumbs} crumbsLabel={t("a11y.breadcrumb")}>
+      <div class="wr-row" data-reveal>
+        <Button size="md" href={lineHref(locale)} icon="arrow-up-right" external={lineUrl !== undefined}>{t("cta.line")}</Button>
+      </div>
+    </PageHead>
+
+    <div class="wr-detail">
+      <article class="wr-prose">
+        <Content />
+      </article>
+      <aside class="wr-detail__aside">
+        <div class="wr-aside">
+          <div class="wr-aside__block">
+            <p class="wr-eyebrow">{t("service.deliverables")}</p>
+            <ul class="wr-list">
+              {entry.data.deliverables.map((item) => <li><Icon name="check" />{item}</li>)}
+            </ul>
+          </div>
+          <div>
+            <Button variant="outline" href={lineHref(locale)} external={lineUrl !== undefined}>{t("cta.quote")}</Button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="wr-section" aria-labelledby="service-work">
+          <SectionHeading id="service-work" eyebrow={t("nav.work")} title={t("service.related")} />
+          <ul class="wr-work" data-reveal>
+            {related.map((w) => (
+              <WorkRow href={localePath(locale, `work/${slugOf(w.id)}`)} year={w.data.year} title={w.data.title} kind={w.data.industry} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      entry.data.faq.length > 0 && (
+        <section class="wr-section wr-faq" aria-labelledby="service-faq">
+          <SectionHeading id="service-faq" eyebrow={t("nav.services")} title={t("service.faq")} />
+          <div class="wr-services" data-reveal>
+            {entry.data.faq.map((item) => (
+              <ServiceRow title={item.q}>
+                <p>{item.a}</p>
+              </ServiceRow>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      posts.length > 0 && (
+        <section class="wr-section" aria-labelledby="service-posts">
+          <SectionHeading id="service-posts" eyebrow={t("nav.blog")} title={t("service.relatedPosts")} />
+          <ul class="wr-posts" data-reveal>
+            {posts.map((p) => (
+              <li>
+                <a class="wr-post" href={localePath(locale, `blog/${slugOf(p.id)}`)}>
+                  <h3 class="wr-post__title">{p.data.title}</h3>
+                  <p class="wr-post__summary">{p.data.summary}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+</Base>

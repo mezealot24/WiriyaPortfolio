@@ -1,0 +1,40 @@
+---
+import Wordmark from "@/components/Wordmark.astro";
+import Base from "@/layouts/Base.astro";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const why = ["about.why1", "about.why2", "about.why3"] as const;
+const limits = ["about.limit1", "about.limit2"] as const;
+---
+
+<Base
+  locale={locale}
+  title={t("about.metaTitle")}
+  description={t("about.metaDescription")}
+  translation={localePath(otherLocale(locale), "about")}
+>
+  <div class="wr-container">
+    <section class="wr-hero">
+      <Wordmark byline />
+      <h1 class="wr-hero__title" data-rise>
+        <span class="wr-line"><span>{t("about.headlineLine1")}</span></span>
+        <span class="wr-line"><span>{t("about.headlineLine2")}</span></span>
+      </h1>
+      <p class="wr-hero__lead" data-reveal>{t("about.lead")}</p>
+    </section>
+
+    <div class="wr-prose wr-section" data-reveal>
+      <h2>{t("about.whyTitle")}</h2>
+      <ul>{why.map((key) => <li>{t(key)}</li>)}</ul>
+      <h2>{t("about.limitsTitle")}</h2>
+      <ul>{limits.map((key) => <li>{t(key)}</li>)}</ul>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,11 @@
+---
+interface Props {
+  items: ReadonlyArray<string>;
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="wr-tags" lang="en">
+  {items.map((item) => <li class="wr-tag">{item}</li>)}
+</ul>

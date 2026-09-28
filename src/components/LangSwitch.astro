@@ -1,0 +1,21 @@
+---
+import type { Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  /** This page in the other language, or that language's home when no translation exists. */
+  alternate: string;
+}
+
+const { locale, alternate } = Astro.props;
+const t = useTranslations(locale);
+const here = Astro.url.pathname;
+const href = (target: Locale): string => (target === locale ? here : alternate);
+---
+
+<div class="wr-lang" role="group" aria-label={t("a11y.language")}>
+  <a class="wr-lang__link" href={href("th")} lang="th" hreflang="th" aria-current={locale === "th" ? "true" : undefined}>TH</a>
+  <span class="wr-lang__sep" aria-hidden="true">/</span>
+  <a class="wr-lang__link" href={href("en")} lang="en" hreflang="en" aria-current={locale === "en" ? "true" : undefined}>EN</a>
+</div>

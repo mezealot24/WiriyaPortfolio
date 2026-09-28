@@ -1,0 +1,43 @@
+---
+import PageHead from "@/components/PageHead.astro";
+import WorkRow from "@/components/WorkRow.astro";
+import Base from "@/layouts/Base.astro";
+import { slugOf, workFor } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const work = await workFor(locale);
+---
+
+<Base
+  locale={locale}
+  title={t("work.metaTitle")}
+  description={t("work.metaDescription")}
+  translation={localePath(otherLocale(locale), "work")}
+>
+  <div class="wr-container">
+    <PageHead title={t("work.headline")} lead={t("work.lead")} />
+    {
+      work.length > 0 ? (
+        <ul class="wr-work wr-section" data-reveal>
+          {work.map((entry) => (
+            <WorkRow
+              href={localePath(locale, `work/${slugOf(entry.id)}`)}
+              year={entry.data.year}
+              title={entry.data.title}
+              kind={entry.data.industry}
+            />
+          ))}
+        </ul>
+      ) : (
+        <p class="wr-section wr-hero__lead">{t("work.empty")}</p>
+      )
+    }
+  </div>
+</Base>

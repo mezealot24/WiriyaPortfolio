@@ -1,0 +1,30 @@
+---
+import Icon, { type IconName } from "./Icon.astro";
+
+interface Props {
+  variant?: "primary" | "accent" | "outline";
+  size?: "sm" | "md" | "lg";
+  href?: string | undefined;
+  icon?: IconName;
+  type?: "button" | "submit";
+  disabled?: boolean;
+  external?: boolean;
+}
+
+const { variant = "primary", size = "sm", href, icon, type = "button", disabled = false, external = false } = Astro.props;
+const classes = ["wr-btn", `wr-btn--${variant}`, { "wr-btn--md": size === "md", "wr-btn--lg": size === "lg" }];
+---
+
+{
+  href ? (
+    <a class:list={classes} href={href} data-pluck rel={external ? "noopener" : undefined}>
+      <slot />
+      {icon && <Icon name={icon} />}
+    </a>
+  ) : (
+    <button class:list={classes} type={type} disabled={disabled} data-pluck>
+      <slot />
+      {icon && <Icon name={icon} />}
+    </button>
+  )
+}
