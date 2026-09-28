@@ -1,0 +1,41 @@
+---
+import PageHead from "@/components/PageHead.astro";
+import ServiceRow from "@/components/ServiceRow.astro";
+import Base from "@/layouts/Base.astro";
+import { servicesFor, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const services = await servicesFor(locale);
+---
+
+<Base
+  locale={locale}
+  title={t("services.metaTitle")}
+  description={t("services.metaDescription")}
+  translation={localePath(otherLocale(locale), "services")}
+>
+  <div class="wr-container">
+    <PageHead title={t("services.headline")} lead={t("services.lead")} />
+    <div class="wr-services wr-section" data-reveal>
+      {
+        services.map((entry) => (
+          <ServiceRow title={entry.data.title} open>
+            <p>{entry.data.summary}</p>
+            <p>
+              <a class="wr-link" href={localePath(locale, `services/${slugOf(entry.id)}`)}>
+                {t("cta.seeService")}
+              </a>
+            </p>
+          </ServiceRow>
+        ))
+      }
+    </div>
+  </div>
+</Base>

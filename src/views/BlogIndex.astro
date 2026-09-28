@@ -1,0 +1,45 @@
+---
+import PageHead from "@/components/PageHead.astro";
+import Base from "@/layouts/Base.astro";
+import { postsFor, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { formatDate, useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const posts = await postsFor(locale);
+---
+
+<Base
+  locale={locale}
+  title={t("blog.metaTitle")}
+  description={t("blog.metaDescription")}
+  translation={localePath(otherLocale(locale), "blog")}
+>
+  <div class="wr-container">
+    <PageHead title={t("blog.headline")} lead={t("blog.lead")} />
+    {
+      posts.length > 0 ? (
+        <ul class="wr-posts wr-section" data-reveal>
+          {posts.map((entry) => (
+            <li>
+              <a class="wr-post" href={localePath(locale, `blog/${slugOf(entry.id)}`)}>
+                <time class="wr-meta" datetime={entry.data.pubDate.toISOString()}>
+                  {formatDate(locale, entry.data.pubDate)}
+                </time>
+                <h2 class="wr-post__title">{entry.data.title}</h2>
+                <p class="wr-post__summary">{entry.data.summary}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="wr-section wr-hero__lead">{t("blog.empty")}</p>
+      )
+    }
+  </div>
+</Base>

@@ -1,0 +1,75 @@
+---
+import { Font } from "astro:assets";
+import ContactCta from "@/components/ContactCta.astro";
+import Header from "@/components/Header.astro";
+import JsonLd from "@/components/JsonLd.astro";
+import Seo from "@/components/Seo.astro";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+import { professionalService } from "@/lib/schema";
+import "@/styles/tokens.css";
+import "@/styles/components.css";
+import "@/styles/site.css";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  /** Path of this page in the other language. Omit when no translation exists. */
+  translation?: string | undefined;
+  type?: "website" | "article";
+  noindex?: boolean;
+  /** Extra structured data for this page. */
+  schema?: ReadonlyArray<Record<string, unknown>>;
+}
+
+const { locale, title, description, translation, type = "website", noindex = false, schema = [] } = Astro.props;
+const t = useTranslations(locale);
+const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+// Without a translation, the language switch leads to the other language's home page.
+const alternate = translation ?? localePath(otherLocale(locale));
+const structured = [professionalService(site, locale, t("site.description")), ...schema];
+---
+
+<!doctype html>
+<html lang={locale} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <script is:inline>
+      (() => {
+        let theme = null;
+        try {
+          theme = localStorage.getItem("theme");
+        } catch {}
+        if (theme !== "light" && theme !== "dark") {
+          theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Font cssVariable="--face-instrument" preload={locale === "en" ? [{ weight: 500 }] : false} />
+    <Font cssVariable="--face-plex-thai" preload={locale === "th" ? [{ weight: 600 }] : false} />
+    <Font cssVariable="--face-newsreader" />
+    <Font cssVariable="--face-jetbrains" />
+    <Seo locale={locale} title={title} description={description} translation={translation} type={type} noindex={noindex} />
+    <JsonLd data={structured} />
+  </head>
+  <body>
+    <a class="wr-skip" href="#main">{t("a11y.skip")}</a>
+    <Header locale={locale} alternate={alternate} />
+    <main id="main">
+      <slot />
+    </main>
+    <ContactCta locale={locale} />
+    <script>
+      import { playPage } from "@/scripts/moves";
+      import { still } from "@/scripts/tempo";
+
+      if (!still()) playPage();
+    </script>
+  </body>
+</html>

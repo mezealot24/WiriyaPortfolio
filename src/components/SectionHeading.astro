@@ -1,0 +1,18 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  level?: 2 | 3;
+  id?: string;
+}
+
+const { eyebrow, title, lead, level = 2, id } = Astro.props;
+const Heading = level === 2 ? "h2" : "h3";
+---
+
+<div class="wr-section-head" data-reveal>
+  <p class="wr-eyebrow">{eyebrow}</p>
+  <Heading class="wr-section-head__title" id={id}>{title}</Heading>
+  {lead && <p class="wr-section-head__lead">{lead}</p>}
+</div>

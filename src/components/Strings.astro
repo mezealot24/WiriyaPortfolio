@@ -1,0 +1,15 @@
+---
+interface Props {
+  /** Which string, 1 to 6 from the top, is drawn in accent-ink. */
+  plucked?: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Draw the strings in from the left on page load. */
+  draw?: boolean;
+}
+
+const { plucked, draw = false } = Astro.props;
+const strings = [1, 2, 3, 4, 5, 6] as const;
+---
+
+<div class="wr-strings" data-draw={draw ? "" : undefined} aria-hidden="true">
+  {strings.map((n) => <i class:list={{ "is-plucked": n === plucked }} />)}
+</div>

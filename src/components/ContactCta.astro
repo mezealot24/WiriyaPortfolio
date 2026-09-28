@@ -1,0 +1,35 @@
+---
+import { localePath, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+import { availability, brand, lineHref, lineUrl } from "@/site";
+import Button from "./Button.astro";
+import Status from "./Status.astro";
+import Strings from "./Strings.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="wr-container wr-end">
+  <section class="wr-cta" aria-labelledby="wr-cta-title">
+    <Strings plucked={6} />
+    <h2 class="wr-cta__title" id="wr-cta-title" data-reveal>
+      {t("cta.titleLine1")}<br />{t("cta.titleLine2")}
+    </h2>
+    <div class="wr-cta__row" data-reveal>
+      <Button size="md" href={lineHref(locale)} icon="arrow-up-right" external={lineUrl !== undefined}>{t("cta.line")}</Button>
+      <Status locale={locale} state={availability} />
+    </div>
+    <footer class="wr-footer">
+      <span><span lang="en">{brand.byline}</span> · {t("site.locality")}</span>
+      <ul class="wr-footer__links">
+        <li><a href={localePath(locale, "about")}>{t("nav.about")}</a></li>
+        <li><a href={brand.github} lang="en" rel="noopener">GitHub</a></li>
+      </ul>
+    </footer>
+  </section>
+</div>

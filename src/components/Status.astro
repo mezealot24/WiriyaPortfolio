@@ -1,0 +1,16 @@
+---
+import type { Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  state: "available" | "booked";
+}
+
+const { locale, state } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<span class:list={["wr-status", { "wr-status--booked": state === "booked" }]}>
+  <span class="wr-status__dot"></span>{t(state === "available" ? "status.available" : "status.booked")}
+</span>

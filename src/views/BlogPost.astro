@@ -1,0 +1,79 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Button from "@/components/Button.astro";
+import PageHead from "@/components/PageHead.astro";
+import Base from "@/layouts/Base.astro";
+import { entriesFor, hasTranslation, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { formatDate, useTranslations } from "@/i18n/t";
+import { article, breadcrumbs } from "@/lib/schema";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"blog">;
+}
+
+const { locale, entry } = Astro.props;
+const t = useTranslations(locale);
+const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const slug = slugOf(entry.id);
+const path = localePath(locale, `blog/${slug}`);
+const other = otherLocale(locale);
+const translation = (await hasTranslation("blog", other, slug)) ? localePath(other, `blog/${slug}`) : undefined;
+const { Content } = await render(entry);
+const services = await entriesFor("services", locale);
+const relatedService = services.find((s) => slugOf(s.id) === entry.data.relatedService);
+const { pubDate, updatedDate } = entry.data;
+
+const crumbs = [
+  { name: t("nav.home"), path: localePath(locale) },
+  { name: t("nav.blog"), path: localePath(locale, "blog") },
+  { name: entry.data.title, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={entry.data.seo.title}
+  description={entry.data.seo.description}
+  translation={translation}
+  type="article"
+  schema={[
+    article(site, locale, "BlogPosting", path, entry.data.title, entry.data.seo.description, pubDate, updatedDate),
+    breadcrumbs(site, crumbs),
+  ]}
+>
+  <div class="wr-container">
+    <PageHead title={entry.data.title} lead={entry.data.summary} crumbs={crumbs} crumbsLabel={t("a11y.breadcrumb")}>
+      <p class="wr-meta">
+        <time datetime={pubDate.toISOString()}>{formatDate(locale, pubDate)}</time>
+        {
+          updatedDate && (
+            <span>
+              {t("blog.updated")} <time datetime={updatedDate.toISOString()}>{formatDate(locale, updatedDate)}</time>
+            </span>
+          )
+        }
+      </p>
+    </PageHead>
+
+    <article class="wr-prose wr-section">
+      <Content />
+    </article>
+
+    {
+      relatedService && (
+        <aside class="wr-section wr-aside" style="max-width: var(--measure);">
+          <p class="wr-eyebrow">{t("nav.services")}</p>
+          <p class="wr-post__title">{relatedService.data.title}</p>
+          <p class="wr-post__summary">{relatedService.data.summary}</p>
+          <div>
+            <Button variant="outline" href={localePath(locale, `services/${slugOf(relatedService.id)}`)} icon="arrow-right">
+              {t("cta.seeService")}
+            </Button>
+          </div>
+        </aside>
+      )
+    }
+  </div>
+</Base>

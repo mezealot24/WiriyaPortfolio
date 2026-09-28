@@ -1,0 +1,21 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  href: string;
+  year: number;
+  title: string;
+  kind: string;
+}
+
+const { href, year, title, kind } = Astro.props;
+---
+
+<li>
+  <a class="wr-work__row" href={href}>
+    <span class="wr-work__year">{year}</span>
+    <h3 class="wr-work__title">{title}</h3>
+    <span class="wr-work__kind">{kind}</span>
+    <Icon name="arrow-up-right" class="wr-work__arrow" />
+  </a>
+</li>

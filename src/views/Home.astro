@@ -1,0 +1,123 @@
+---
+import Button from "@/components/Button.astro";
+import SectionHeading from "@/components/SectionHeading.astro";
+import ServiceRow from "@/components/ServiceRow.astro";
+import Status from "@/components/Status.astro";
+import Strings from "@/components/Strings.astro";
+import WorkRow from "@/components/WorkRow.astro";
+import Base from "@/layouts/Base.astro";
+import { postsFor, servicesFor, slugOf, workFor } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+import { webSite } from "@/lib/schema";
+import { availability, lineHref, lineUrl } from "@/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const [services, work, posts] = await Promise.all([servicesFor(locale), workFor(locale), postsFor(locale)]);
+const steps = [1, 2, 3, 4, 5] as const;
+---
+
+<Base
+  locale={locale}
+  title={t("home.metaTitle")}
+  description={t("site.description")}
+  translation={localePath(otherLocale(locale))}
+  schema={[webSite(site, locale)]}
+>
+  <div class="wr-container">
+    <section class="wr-hero">
+      <Strings plucked={3} draw />
+      <h1 class="wr-hero__title" data-rise>
+        <span class="wr-line"><span>{t("home.heroLine1")}</span></span>
+        <span class="wr-line"><span>{t("home.heroLine2")}</span></span>
+      </h1>
+      <p class="wr-hero__lead" data-reveal>{t("home.lead")}</p>
+      <div class="wr-row" data-reveal>
+        <Button size="md" href={lineHref(locale)} icon="arrow-up-right" external={lineUrl !== undefined}>{t("cta.line")}</Button>
+        <Button variant="outline" size="md" href={localePath(locale, "work")} icon="arrow-right">{t("cta.seeWork")}</Button>
+        <Status locale={locale} state={availability} />
+      </div>
+    </section>
+
+    {
+      services.length > 0 && (
+        <section class="wr-section" aria-labelledby="home-services">
+          <SectionHeading id="home-services" eyebrow={t("home.servicesEyebrow")} title={t("home.servicesTitle")} />
+          <div class="wr-services" data-reveal>
+            {services.map((entry, index) => (
+              <ServiceRow title={entry.data.title} open={index === 0}>
+                <p>{entry.data.summary}</p>
+                <p>
+                  <a class="wr-link" href={localePath(locale, `services/${slugOf(entry.id)}`)}>
+                    {t("cta.seeService")}
+                  </a>
+                </p>
+              </ServiceRow>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      work.length > 0 && (
+        <section class="wr-section" aria-labelledby="home-work">
+          <SectionHeading id="home-work" eyebrow={t("home.workEyebrow")} title={t("home.workTitle")} lead={t("home.workLead")} />
+          <ul class="wr-work" data-reveal>
+            {work.map((entry) => (
+              <WorkRow
+                href={localePath(locale, `work/${slugOf(entry.id)}`)}
+                year={entry.data.year}
+                title={entry.data.title}
+                kind={entry.data.industry}
+              />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="wr-section" aria-labelledby="home-process">
+      <SectionHeading id="home-process" eyebrow={t("home.processEyebrow")} title={t("home.processTitle")} />
+      <ol class="wr-steps" data-reveal>
+        {
+          steps.map((n) => (
+            <li>
+              <div>
+                <h3>{t(`process.${n}.title`)}</h3>
+                <p>{t(`process.${n}.body`)}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    {
+      posts.length > 0 && (
+        <section class="wr-section" aria-labelledby="home-blog">
+          <SectionHeading id="home-blog" eyebrow={t("home.blogEyebrow")} title={t("home.blogTitle")} />
+          <ul class="wr-posts" data-reveal>
+            {posts.slice(0, 3).map((entry) => (
+              <li>
+                <a class="wr-post" href={localePath(locale, `blog/${slugOf(entry.id)}`)}>
+                  <h3 class="wr-post__title">{entry.data.title}</h3>
+                  <p class="wr-post__summary">{entry.data.summary}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="wr-section__more">
+            <a class="wr-link" href={localePath(locale, "blog")}>{t("cta.allPosts")}</a>
+          </p>
+        </section>
+      )
+    }
+  </div>
+</Base>

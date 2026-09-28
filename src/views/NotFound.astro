@@ -1,0 +1,28 @@
+---
+import Button from "@/components/Button.astro";
+import Strings from "@/components/Strings.astro";
+import Base from "@/layouts/Base.astro";
+import { localePath, type Locale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<Base locale={locale} title={t("notFound.metaTitle")} description={t("notFound.lead")} noindex>
+  <div class="wr-container">
+    <section class="wr-404">
+      <Strings plucked={1} />
+      <h1 class="wr-page-head__title">{t("notFound.title")}</h1>
+      <p class="wr-hero__lead">{t("notFound.lead")}</p>
+      <div class="wr-row">
+        <Button href={localePath(locale)}>{t("nav.home")}</Button>
+        <Button variant="outline" href={localePath(locale, "services")}>{t("cta.seeServices")}</Button>
+      </div>
+    </section>
+  </div>
+</Base>

@@ -1,0 +1,15 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  title: string;
+  open?: boolean;
+}
+
+const { title, open = false } = Astro.props;
+---
+
+<details class="wr-service" open={open}>
+  <summary>{title} <Icon name="plus" /></summary>
+  <div class="wr-service__body"><slot /></div>
+</details>

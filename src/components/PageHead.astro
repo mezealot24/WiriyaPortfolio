@@ -1,0 +1,34 @@
+---
+interface Props {
+  title: string;
+  lead?: string | undefined;
+  /** Trail from home to this page; the last item is the page itself and is not linked. */
+  crumbs?: ReadonlyArray<{ name: string; path: string }>;
+  crumbsLabel?: string;
+}
+
+const { title, lead, crumbs = [], crumbsLabel } = Astro.props;
+---
+
+<div class="wr-page-head">
+  {
+    crumbs.length > 1 && (
+      <nav aria-label={crumbsLabel}>
+        <ol class="wr-crumbs">
+          {crumbs.map((crumb, index) =>
+            index < crumbs.length - 1 ? (
+              <li>
+                <a href={crumb.path}>{crumb.name}</a>
+              </li>
+            ) : (
+              <li aria-current="page">{crumb.name}</li>
+            ),
+          )}
+        </ol>
+      </nav>
+    )
+  }
+  <h1 class="wr-page-head__title">{title}</h1>
+  {lead && <p class="wr-hero__lead" data-reveal>{lead}</p>}
+  <slot />
+</div>
