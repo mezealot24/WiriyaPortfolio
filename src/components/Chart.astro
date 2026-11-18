@@ -1,0 +1,26 @@
+---
+// Illustrative trend only, labelled as such. Replace with a real Search Console export once the client agrees.
+interface Props {
+  unit: string;
+  marker: string;
+  alt: string;
+  note: string;
+}
+const { unit, marker, alt, note } = Astro.props;
+---
+
+<figure class="chart" data-inview>
+  <figcaption class="chart__head"><span>{unit}</span><span>{note}</span></figcaption>
+  <div class="chart__plot">
+    <span class="chart__mark" aria-hidden="true">{marker}</span>
+    <svg viewBox="0 0 400 150" role="img" aria-label={alt}>
+      <line class="gridline" x1="0" y1="30" x2="400" y2="30"></line>
+      <line class="gridline" x1="0" y1="75" x2="400" y2="75"></line>
+      <line class="gridline" x1="0" y1="120" x2="400" y2="120"></line>
+      <line class="marker" x1="130" y1="8" x2="130" y2="140"></line>
+      <path class="area" d="M0 122 L40 118 L80 124 L130 120 L170 104 L210 96 L250 78 L290 70 L330 48 L370 40 L392 24 L392 140 L0 140 Z"></path>
+      <path class="line" pathLength="1" d="M0 122 L40 118 L80 124 L130 120 L170 104 L210 96 L250 78 L290 70 L330 48 L370 40 L392 24"></path>
+      <circle class="end" cx="392" cy="24" r="4"></circle>
+    </svg>
+  </div>
+</figure>

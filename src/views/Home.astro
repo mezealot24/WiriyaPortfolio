@@ -1,123 +1,168 @@
 ---
-import Button from "@/components/Button.astro";
-import SectionHeading from "@/components/SectionHeading.astro";
-import ServiceRow from "@/components/ServiceRow.astro";
-import Status from "@/components/Status.astro";
-import Strings from "@/components/Strings.astro";
-import WorkRow from "@/components/WorkRow.astro";
+import CaseCard from "@/components/CaseCard.astro";
+import Checks from "@/components/Checks.astro";
+import Faq from "@/components/Faq.astro";
+import FinalCta from "@/components/FinalCta.astro";
+import LeadForm from "@/components/LeadForm.astro";
+import LineButton from "@/components/LineButton.astro";
+import PackageCard from "@/components/PackageCard.astro";
+import ProofStrip from "@/components/ProofStrip.astro";
 import Base from "@/layouts/Base.astro";
-import { postsFor, servicesFor, slugOf, workFor } from "@/i18n/content";
+import { packagesFor, workFor } from "@/i18n/content";
 import { localePath, otherLocale, type Locale } from "@/i18n/locales";
-import { useTranslations } from "@/i18n/t";
-import { webSite } from "@/lib/schema";
-import { availability, lineHref, lineUrl } from "@/site";
+import { copyFor } from "@/i18n/t";
+import { faqPage, webSite } from "@/lib/schema";
+import { availability } from "@/site";
 
 interface Props {
   locale: Locale;
 }
-
 const { locale } = Astro.props;
-const t = useTranslations(locale);
-const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
-const [services, work, posts] = await Promise.all([servicesFor(locale), workFor(locale), postsFor(locale)]);
-const steps = [1, 2, 3, 4, 5] as const;
+const c = copyFor(locale);
+const h = c.home;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const packages = await packagesFor(locale);
+const work = await workFor(locale);
+const featured = work.find((w) => w.data.featured) ?? work[0];
+const faq = c.faq.slice(0, 5);
 ---
 
 <Base
   locale={locale}
-  title={t("home.metaTitle")}
-  description={t("site.description")}
+  title={h.title}
+  description={h.description}
   translation={localePath(otherLocale(locale))}
-  schema={[webSite(site, locale)]}
+  schema={[webSite(site, locale), faqPage(faq)]}
 >
-  <div class="wr-container">
-    <section class="wr-hero">
-      <Strings plucked={3} draw />
-      <h1 class="wr-hero__title" data-rise>
-        <span class="wr-line"><span>{t("home.heroLine1")}</span></span>
-        <span class="wr-line"><span>{t("home.heroLine2")}</span></span>
-      </h1>
-      <p class="wr-hero__lead" data-reveal>{t("home.lead")}</p>
-      <div class="wr-row" data-reveal>
-        <Button size="md" href={lineHref(locale)} icon="arrow-up-right" external={lineUrl !== undefined}>{t("cta.line")}</Button>
-        <Button variant="outline" size="md" href={localePath(locale, "work")} icon="arrow-right">{t("cta.seeWork")}</Button>
-        <Status locale={locale} state={availability} />
+  <!-- 1. Hero + 2. Proof strip -->
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="container">
+      <p class="eyebrow" data-reveal>{h.eyebrow}</p>
+      <h1 id="h-hero" data-reveal style="--i:1" set:html={h.h1Html} />
+      <p class="hero__sub" data-reveal style="--i:2" set:html={h.subHtml} />
+      <div class="hero__cta" data-reveal style="--i:3" data-bar-start>
+        <LineButton locale={locale} position="hero" label={c.line.talk} magnetic />
+        <a class="btn btn--ghost" href={localePath(locale, "work")}>{h.seeWork} <span class="arrow" aria-hidden="true">→</span></a>
       </div>
-    </section>
+      <p class="hero__micro" data-reveal style="--i:4">
+        <span class="pulse" aria-hidden="true"></span>{availability === "booked" ? c.line.booked : c.line.reassure}
+      </p>
+      {featured && <ProofStrip locale={locale} entry={featured} />}
+    </div>
+  </section>
 
-    {
-      services.length > 0 && (
-        <section class="wr-section" aria-labelledby="home-services">
-          <SectionHeading id="home-services" eyebrow={t("home.servicesEyebrow")} title={t("home.servicesTitle")} />
-          <div class="wr-services" data-reveal>
-            {services.map((entry, index) => (
-              <ServiceRow title={entry.data.title} open={index === 0}>
-                <p>{entry.data.summary}</p>
-                <p>
-                  <a class="wr-link" href={localePath(locale, `services/${slugOf(entry.id)}`)}>
-                    {t("cta.seeService")}
-                  </a>
-                </p>
-              </ServiceRow>
-            ))}
-          </div>
-        </section>
-      )
-    }
-
-    {
-      work.length > 0 && (
-        <section class="wr-section" aria-labelledby="home-work">
-          <SectionHeading id="home-work" eyebrow={t("home.workEyebrow")} title={t("home.workTitle")} lead={t("home.workLead")} />
-          <ul class="wr-work" data-reveal>
-            {work.map((entry) => (
-              <WorkRow
-                href={localePath(locale, `work/${slugOf(entry.id)}`)}
-                year={entry.data.year}
-                title={entry.data.title}
-                kind={entry.data.industry}
-              />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <section class="wr-section" aria-labelledby="home-process">
-      <SectionHeading id="home-process" eyebrow={t("home.processEyebrow")} title={t("home.processTitle")} />
-      <ol class="wr-steps" data-reveal>
+  <!-- 3. Problems -->
+  <section class="section" aria-labelledby="h-problems">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">Problems</p>
+        <h2 id="h-problems">{h.problemsTitle}</h2>
+      </div>
+      <ul class="grid grid--2">
         {
-          steps.map((n) => (
-            <li>
-              <div>
-                <h3>{t(`process.${n}.title`)}</h3>
-                <p>{t(`process.${n}.body`)}</p>
-              </div>
+          h.problemsHtml.map((item, i) => (
+            <li class="card problem" data-reveal style={i % 2 ? "--i:1" : undefined}>
+              <span class="problem__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <p set:html={item} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. Packages -->
+  <section class="section section--tint" aria-labelledby="h-services">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">Services</p>
+        <h2 id="h-services">{h.packagesTitle}</h2>
+      </div>
+      <div class="grid grid--3">
+        {packages.map((entry, i) => <PackageCard locale={locale} entry={entry} context="home" index={i} />)}
+      </div>
+      <p class="price-note" data-reveal>
+        <span>{c.common.priceNote}</span>
+        <a class="link" href={`${localePath(locale, "services")}#compare`}>{h.compareLink} <span class="arrow" aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. Featured case -->
+  {
+    featured && (
+      <section class="section" aria-labelledby="h-case">
+        <div class="container">
+          <CaseCard locale={locale} entry={featured} id="h-case" />
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 6. Process -->
+  <section class="section section--tint" aria-labelledby="h-process">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">Process</p>
+        <h2 id="h-process">{h.processTitle}</h2>
+      </div>
+      <ol class="steps">
+        {
+          c.process.map((step, i) => (
+            <li class="step" data-reveal style={i ? `--i:${i}` : undefined}>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
             </li>
           ))
         }
       </ol>
-    </section>
+    </div>
+  </section>
 
-    {
-      posts.length > 0 && (
-        <section class="wr-section" aria-labelledby="home-blog">
-          <SectionHeading id="home-blog" eyebrow={t("home.blogEyebrow")} title={t("home.blogTitle")} />
-          <ul class="wr-posts" data-reveal>
-            {posts.slice(0, 3).map((entry) => (
-              <li>
-                <a class="wr-post" href={localePath(locale, `blog/${slugOf(entry.id)}`)}>
-                  <h3 class="wr-post__title">{entry.data.title}</h3>
-                  <p class="wr-post__summary">{entry.data.summary}</p>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p class="wr-section__more">
-            <a class="wr-link" href={localePath(locale, "blog")}>{t("cta.allPosts")}</a>
-          </p>
-        </section>
-      )
-    }
-  </div>
+  <!-- 7. Why -->
+  <section class="section" aria-labelledby="h-why">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">Why</p>
+        <h2 id="h-why">{h.whyTitle}</h2>
+      </div>
+      <ul class="why">
+        {
+          h.why.map((item) => (
+            <li class="why__item" data-reveal>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8. Audit -->
+  <section class="section section--tint" id="audit" aria-labelledby="h-audit">
+    <div class="container audit">
+      <div data-reveal>
+        <p class="eyebrow">Free audit</p>
+        <h2 id="h-audit">{h.auditTitle}</h2>
+        <p class="muted" style="margin-top:var(--space-4)">{h.auditSub}</p>
+        <Checks items={h.auditList} class="audit__list" />
+      </div>
+      <LeadForm locale={locale} kind="audit" />
+    </div>
+  </section>
+
+  <!-- 9. FAQ -->
+  <section class="section" aria-labelledby="h-faq">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">FAQ</p>
+        <h2 id="h-faq">{h.faqTitle}</h2>
+      </div>
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <!-- 10. Final CTA -->
+  <FinalCta locale={locale} title={h.finalTitle} sub={h.finalSub} />
 </Base>

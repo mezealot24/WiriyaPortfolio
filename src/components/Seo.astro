@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { locale, title, description, translation, type = "website", noindex = false } = Astro.props;
-const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const site = Astro.site ?? new URL("https://siliconwarin.com");
 const canonical = new URL(Astro.url.pathname, site).href;
 const other = otherLocale(locale);
 const alternates: Array<{ lang: string; href: string }> = [{ lang: locale, href: canonical }];

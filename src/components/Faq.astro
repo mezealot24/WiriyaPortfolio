@@ -1,0 +1,21 @@
+---
+// Native exclusive accordion. Answers stay in the HTML for FAQPage schema and crawlers. No JavaScript.
+interface Props {
+  items: ReadonlyArray<{ q: string; a: string }>;
+  name?: string;
+}
+const { items, name = "faq" } = Astro.props;
+---
+
+<div class="faq" data-reveal>
+  {
+    items.map((item, i) => (
+      <details name={name} open={i === 0}>
+        <summary>
+          {item.q} <span class="plus" aria-hidden="true" />
+        </summary>
+        <p class="faq__a">{item.a}</p>
+      </details>
+    ))
+  }
+</div>

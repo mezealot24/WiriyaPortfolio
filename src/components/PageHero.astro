@@ -1,0 +1,28 @@
+---
+import Crumbs from "@/components/Crumbs.astro";
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  /** Thai part of the eyebrow: set in the sans face, never tracked. */
+  eyebrowNote?: string;
+  title: string;
+  /** Authored HTML version of the title (nb spans). */
+  titleHtml?: string | undefined;
+  sub?: string | undefined;
+  crumbs?: ReadonlyArray<{ name: string; path: string }>;
+  crumbsLabel?: string;
+}
+const { id, eyebrow, eyebrowNote, title, titleHtml, sub, crumbs, crumbsLabel = "" } = Astro.props;
+---
+
+<section class="page-hero" aria-labelledby={id} data-bar-start>
+  <div class="container">
+    {crumbs && crumbs.length > 1 && <Crumbs label={crumbsLabel} items={crumbs} />}
+    <slot name="meta" />
+    <p class="eyebrow" data-reveal>{eyebrow}{eyebrowNote && <> · <span class="th">{eyebrowNote}</span></>}</p>
+    <h1 id={id} data-reveal style="--i:1" set:html={titleHtml ?? title} />
+    {sub && <p class="hero__sub" data-reveal style="--i:2">{sub}</p>}
+    <slot />
+  </div>
+</section>

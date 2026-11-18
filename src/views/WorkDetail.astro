@@ -1,11 +1,14 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
-import PageHead from "@/components/PageHead.astro";
-import Tags from "@/components/Tags.astro";
+import CaseEvidence from "@/components/CaseEvidence.astro";
+import FinalCta from "@/components/FinalCta.astro";
+import MetricValue from "@/components/MetricValue.astro";
+import PackageCard from "@/components/PackageCard.astro";
+import PageHero from "@/components/PageHero.astro";
 import Base from "@/layouts/Base.astro";
-import { entriesFor, hasTranslation, slugOf } from "@/i18n/content";
+import { hasTranslation, packagesFor, slugOf } from "@/i18n/content";
 import { localePath, otherLocale, type Locale } from "@/i18n/locales";
-import { useTranslations } from "@/i18n/t";
+import { copyFor } from "@/i18n/t";
 import { article, breadcrumbs } from "@/lib/schema";
 
 interface Props {
@@ -14,68 +17,121 @@ interface Props {
 }
 
 const { locale, entry } = Astro.props;
-const t = useTranslations(locale);
-const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const c = copyFor(locale);
+const k = c.case;
+const d = entry.data;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
 const slug = slugOf(entry.id);
 const path = localePath(locale, `work/${slug}`);
 const other = otherLocale(locale);
 const translation = (await hasTranslation("work", other, slug)) ? localePath(other, `work/${slug}`) : undefined;
 const { Content } = await render(entry);
-const services = await entriesFor("services", locale);
-const usedService = services.find((s) => slugOf(s.id) === entry.data.service);
+const pending = d.clientVisibility !== "named";
+const related = (await packagesFor(locale)).find((p) => slugOf(p.id) === d.relatedPackage);
 
 const crumbs = [
-  { name: t("nav.home"), path: localePath(locale) },
-  { name: t("nav.work"), path: localePath(locale, "work") },
-  { name: entry.data.title, path },
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.work, path: localePath(locale, "work") },
+  { name: d.title, path },
 ];
 ---
 
 <Base
   locale={locale}
-  title={entry.data.seo.title}
-  description={entry.data.seo.description}
+  title={d.seo.title}
+  description={d.seo.description}
   translation={translation}
   type="article"
-  schema={[article(site, locale, "Article", path, entry.data.title, entry.data.seo.description), breadcrumbs(site, crumbs)]}
+  schema={[article(site, locale, "Article", path, d.title, d.seo.description, d.date, d.updated), breadcrumbs(site, crumbs)]}
 >
-  <div class="wr-container">
-    <PageHead title={entry.data.title} lead={entry.data.summary} crumbs={crumbs} crumbsLabel={t("a11y.breadcrumb")}>
-      <p class="wr-meta">
-        <span>{entry.data.year}</span>
-        <span>{entry.data.industry}</span>
-        {entry.data.anonymized && <span>{t("work.anonymized")}</span>}
-      </p>
-    </PageHead>
+  <PageHero id="h-page" eyebrow={c.common.caseEyebrow} eyebrowNote={d.industry} title={d.title} titleHtml={d.titleHtml} sub={d.summary} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb}>
+    <div slot="meta" class="page-hero__meta">
+      {d.tags.map((tag) => <span class="badge">{tag}</span>)}
+      {pending && <span class="badge badge--notice">{c.common.pending}</span>}
+    </div>
+  </PageHero>
 
-    <div class="wr-detail">
-      <article class="wr-prose">
-        <Content />
-      </article>
-      <aside class="wr-detail__aside">
-        <div class="wr-aside">
-          <div class="wr-aside__block">
-            <p class="wr-eyebrow">{t("work.role")}</p>
-            <p>{entry.data.role}</p>
-          </div>
-          <div class="wr-aside__block">
-            <p class="wr-eyebrow">{t("work.stack")}</p>
-            <Tags items={entry.data.stack} />
-          </div>
+  <section class="section" style="padding-top:var(--space-5)">
+    <div class="container layout-aside">
+      <div data-reveal><CaseEvidence locale={locale} entry={entry} /></div>
+      <aside class="card" data-reveal style="--i:1">
+        <dl class="facts">
+          <div><dt>{k.client}</dt><dd>{d.client}</dd></div>
+          <div><dt>{k.role}</dt><dd>{d.role}</dd></div>
+          <div><dt>{k.period}</dt><dd>{d.period ?? c.common.tbc}</dd></div>
           {
-            usedService && (
-              <div class="wr-aside__block">
-                <p class="wr-eyebrow">{t("work.services")}</p>
-                <p>
-                  <a class="wr-link" href={localePath(locale, `services/${slugOf(usedService.id)}`)}>
-                    {usedService.data.title}
-                  </a>
-                </p>
+            d.stack.map((g) => (
+              <div>
+                <dt>{k.stack} · {g.group}</dt>
+                <dd class="tags">{g.items.map((item) => <span class="badge">{item}</span>)}</dd>
               </div>
-            )
+            ))
           }
-        </div>
+          {d.services.length > 0 && <div><dt>{k.services}</dt><dd>{d.services.join(" · ")}</dd></div>}
+        </dl>
       </aside>
     </div>
-  </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <article class="prose" data-reveal>
+        <Content />
+      </article>
+    </div>
+  </section>
+
+  <!-- Every figure: value, label, source, period, and a visible permission badge until approved. -->
+  <section class="section section--tint" aria-labelledby="h-results">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">{k.resultsEyebrow}</p>
+        <h2 id="h-results">{k.resultsTitle}</h2>
+        {pending && <p>{k.resultsNote}</p>}
+      </div>
+      <dl class="results" data-reveal>
+        {
+          d.metrics.map((m) => (
+            <div class="results__row">
+              <MetricValue value={m.value} decimals={m.decimals} prefix={m.prefix} suffix={m.suffix} accent={m.accent} />
+              <dt class="results__label">{m.label}</dt>
+              <dd class="results__meta">
+                <span>{c.common.source}: {m.source}</span>
+                <span>{m.period ?? c.common.periodPending}</span>
+                {pending && <span class="badge badge--notice">{c.common.pending}</span>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-quote">
+    <div class="container split">
+      <div class="stack" data-reveal>
+        <h2 id="h-quote" style="font-size:var(--fs-lg)">{k.quoteTitle}</h2>
+        {
+          d.quote && d.quote.permission === "granted" ? (
+            <blockquote class="card">
+              <p>“{d.quote.text}”</p>
+              <footer class="muted" style="margin-top:var(--space-3);font-size:var(--fs-sm)">{d.quote.name} · {d.quote.role}</footer>
+            </blockquote>
+          ) : (
+            <p class="quote">{k.quotePending}</p>
+          )
+        }
+      </div>
+      {
+        related && (
+          <div class="stack" data-reveal style="--i:1">
+            <h2 style="font-size:var(--fs-lg)">{k.relatedPackage}</h2>
+            <PackageCard locale={locale} entry={related} context="home" />
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <FinalCta locale={locale} title={k.ctaTitle} sub={k.ctaSub} line={c.line.talk} secondary={{ href: localePath(locale, "audit"), label: c.services.auditCta }} />
 </Base>

@@ -1,46 +1,76 @@
 ---
-import Button from "@/components/Button.astro";
-import Icon from "@/components/Icon.astro";
-import PageHead from "@/components/PageHead.astro";
+import CopyEmail from "@/components/CopyEmail.astro";
+import LeadForm from "@/components/LeadForm.astro";
+import LineButton from "@/components/LineButton.astro";
+import PageHero from "@/components/PageHero.astro";
 import Base from "@/layouts/Base.astro";
+import { packagesFor, slugOf } from "@/i18n/content";
 import { localePath, otherLocale, type Locale } from "@/i18n/locales";
-import { useTranslations } from "@/i18n/t";
-import { contactEmail, lineUrl } from "@/site";
+import { copyFor } from "@/i18n/t";
+import { breadcrumbs, page } from "@/lib/schema";
+import { availability, contactEmail, lineUrl } from "@/site";
 
 interface Props {
   locale: Locale;
 }
-
 const { locale } = Astro.props;
-const t = useTranslations(locale);
-const tell = ["contact.tell1", "contact.tell2", "contact.tell3", "contact.tell4"] as const;
+const c = copyFor(locale);
+const k = c.contact;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const path = localePath(locale, "contact");
+const packages = (await packagesFor(locale)).map((p) => ({ slug: slugOf(p.id), name: p.data.name }));
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.contact, path },
+];
 ---
 
 <Base
   locale={locale}
-  title={t("contact.metaTitle")}
-  description={t("contact.metaDescription")}
+  title={k.title}
+  description={k.description}
   translation={localePath(otherLocale(locale), "contact")}
+  schema={[page(site, locale, "ContactPage", path, k.title, k.description), breadcrumbs(site, crumbs)]}
 >
-  <div class="wr-container">
-    <PageHead title={t("contact.headline")} lead={t("contact.lead")}>
-      <div class="wr-row" data-reveal>
-        {lineUrl && <Button size="md" href={lineUrl} icon="arrow-up-right" external>{t("cta.line")}</Button>}
+  <PageHero id="h-page" eyebrow={k.eyebrow} title={k.h1} sub={k.sub} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb} />
+
+  <section class="section" style="padding-top:var(--space-5)" aria-label={k.formTitle}>
+    <div class="container split">
+      <div class="stack" style="gap:var(--space-6)">
+        <div class="card channel" data-reveal data-bar-stop>
+          <h2 style="font-size:var(--fs-lg)">{k.lineTitle}</h2>
+          {
+            lineUrl ? (
+              <>
+                <LineButton locale={locale} position="contact" label={c.line.addFriend} />
+                {/* TODO(owner): add the LINE OA QR code image beside the button on desktop. */}
+              </>
+            ) : (
+              <p class="notice">{k.lineMissing}</p>
+            )
+          }
+          <p class="hero__micro" style="margin:0">
+            <span class="pulse" aria-hidden="true"></span>{availability === "booked" ? c.line.booked : c.line.reassure}
+          </p>
+        </div>
+        <div data-reveal>
+          <h2 style="font-size:var(--fs-lg);margin-bottom:var(--space-4)">{k.afterTitle}</h2>
+          <ol class="after">{k.after.map((line) => <li>{line}</li>)}</ol>
+        </div>
         {
           contactEmail && (
-            <a class="wr-link" href={`mailto:${contactEmail}`}>
-              <Icon name="mail" /> {contactEmail}
-            </a>
+            <div data-reveal>
+              <h2 style="font-size:var(--fs-lg);margin-bottom:var(--space-2)">{k.otherTitle}</h2>
+              <p class="muted" style="font-size:var(--fs-sm)">{k.email}</p>
+              <CopyEmail locale={locale} email={contactEmail} />
+            </div>
           )
         }
       </div>
-      {!lineUrl && <p class="wr-meta">{t("contact.noLine")}</p>}
-    </PageHead>
-
-    <div class="wr-prose wr-section" data-reveal>
-      <h2>{t("contact.tellTitle")}</h2>
-      <ul>{tell.map((key) => <li>{t(key)}</li>)}</ul>
-      <p>{t("cta.reply")}</p>
+      <div>
+        <h2 class="sr-only">{k.formTitle}</h2>
+        <LeadForm locale={locale} kind="contact" packages={packages} />
+      </div>
     </div>
-  </div>
+  </section>
 </Base>

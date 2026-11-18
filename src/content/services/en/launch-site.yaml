@@ -1,0 +1,26 @@
+# TODO(owner): prices are assumptions; keep in sync with th/launch-site.yaml.
+name: Launch Site
+tagline: An SEO-ready business website, live on Google
+order: 1
+priceFrom: 25000
+duration: 2–3 weeks
+fit: Businesses with no website yet, or an old one that's slow or invisible, who want a professional site quickly
+highlights:
+  - 5–7 responsive pages
+  - Basic SEO + Local Business schema
+  - Search Console + GA4 set up for you
+  - Contact form + LINE button
+includes:
+  - 5–7 pages (Home, Services, About, Work/Reviews, Contact), responsive on every device
+  - Astro on Cloudflare Workers, fast, with SSL and CDN
+  - "Basic SEO: title/meta, heading structure, sitemap, robots, Open Graph, Local Business schema"
+  - Google Search Console, GA4 and Google Business Profile set up and linked
+  - Contact form + LINE button
+  - Easy-to-edit content (Markdown) + a one-page guide
+  - 14 days of post-launch fixes
+excludes:
+  - Writing all the content for you (add-on available)
+  - Photography/logo design
+  - E-commerce/payments
+  - Member login
+  - More than 7 pages (~2,000–3,500 THB per extra page)

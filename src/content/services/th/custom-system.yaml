@@ -1,0 +1,27 @@
+# TODO(owner): prices are [ASSUMPTION] in site-structure.md §3 (Custom System from 80,000; Discovery ~8,000–15,000). Confirm before launch.
+name: Custom System
+tagline: ระบบหลังบ้าน/web app ตามโจทย์
+order: 3
+priceFrom: 80000
+priceNote: โครงการทั่วไป 80,000–250,000+ บาท
+duration: แบ่ง milestone ราย 2 สัปดาห์
+fit: ธุรกิจที่ใช้ Excel/กลุ่ม LINE/กระดาษจัดการงานจนเริ่มไม่ไหว ต้องการระบบจัดการลูกค้า สต็อก ใบเสนอราคา นัดหมาย
+highlights:
+  - Discovery 1 สัปดาห์ ก่อนประเมินราคาตายตัว
+  - Login + สิทธิ์ผู้ใช้, ตาราง/ค้นหา/export
+  - ปรับตามขั้นตอนงานจริง ไม่ใช่ template
+  - เชื่อม LINE (LIFF / แจ้งเตือน)
+includes:
+  - "Discovery: workflow map, ขอบเขต, ลำดับความสำคัญ และประเมินราคาตายตัว"
+  - ระบบ web app (เช่น Next.js + Postgres) พร้อม login/สิทธิ์ผู้ใช้ (role-based), ตาราง/ค้นหา/กรอง/export
+  - ปรับตามขั้นตอนงานจริงของธุรกิจ (ไม่ใช่ template)
+  - เชื่อม LINE (LIFF / แจ้งเตือน LINE) ตามขอบเขต
+  - Staging + production, backup ฐานข้อมูล, เอกสารใช้งาน, training 1 ชม.
+  - Support 30–60 วัน
+excludes:
+  - ระบบบัญชี/ภาษีเต็มรูป
+  - Mobile app native
+  - เชื่อม API ระบบ third-party ที่ไม่มีเอกสาร
+  - ค่า hosting/infra รายเดือน (ลูกค้าเป็นเจ้าของบัญชี ประมาณ 0–1,500 บาท/เดือน)
+  - งานเปลี่ยน scope ระหว่างทาง (เสนอเป็น change request)
+note: เริ่มด้วย Discovery 1 สัปดาห์ (ประมาณ 8,000–15,000 บาท หักออกจากราคาถ้าทำต่อ)

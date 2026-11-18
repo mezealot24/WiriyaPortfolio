@@ -1,0 +1,16 @@
+---
+import LineButton from "@/components/LineButton.astro";
+import type { Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = copyFor(locale);
+---
+
+<div class="linebar" id="lineBar">
+  <span set:html={c.line.barHtml} />
+  <LineButton locale={locale} position="mobile-bar" label={c.line.talk} size="sm" icon={false} />
+</div>

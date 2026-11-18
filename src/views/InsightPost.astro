@@ -1,0 +1,49 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import FinalCta from "@/components/FinalCta.astro";
+import PageHero from "@/components/PageHero.astro";
+import Base from "@/layouts/Base.astro";
+import { hasTranslation, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { copyFor, formatDate } from "@/i18n/t";
+import { article, breadcrumbs } from "@/lib/schema";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"blog">;
+}
+const { locale, entry } = Astro.props;
+const c = copyFor(locale);
+const d = entry.data;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const slug = slugOf(entry.id);
+const path = localePath(locale, `insights/${slug}`);
+const other = otherLocale(locale);
+const translation = (await hasTranslation("blog", other, slug)) ? localePath(other, `insights/${slug}`) : undefined;
+const { Content } = await render(entry);
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.insights, path: localePath(locale, "insights") },
+  { name: d.title, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={d.seo.title}
+  description={d.seo.description}
+  translation={translation}
+  type="article"
+  schema={[article(site, locale, "BlogPosting", path, d.title, d.seo.description, d.pubDate, d.updatedDate), breadcrumbs(site, crumbs)]}
+>
+  <PageHero id="h-page" eyebrow={c.insights.eyebrow} title={d.title} sub={d.summary} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb}>
+    <p class="mono muted" style="margin-top:var(--space-4);font-size:var(--fs-sm)">
+      <time datetime={d.pubDate.toISOString()}>{formatDate(locale, d.pubDate)}</time>
+      {d.updatedDate && <> · {c.insights.updated} <time datetime={d.updatedDate.toISOString()}>{formatDate(locale, d.updatedDate)}</time></>}
+    </p>
+  </PageHero>
+  <section class="section" style="padding-top:var(--space-5)">
+    <div class="container"><article class="prose"><Content /></article></div>
+  </section>
+  <FinalCta locale={locale} title={c.insights.ctaTitle} sub={c.insights.ctaSub} line={c.line.talk} secondary={{ href: localePath(locale, "audit"), label: c.services.auditCta }} />
+</Base>

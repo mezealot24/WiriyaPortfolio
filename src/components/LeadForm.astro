@@ -1,0 +1,140 @@
+---
+// Contact and audit forms share fields, validation and the PDPA consent row.
+// TODO(form handler): action points to /api/{kind}, a Worker route that does not exist yet (see wrangler.jsonc).
+import LineButton from "@/components/LineButton.astro";
+import { localePath, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+import { contactEmail } from "@/site";
+
+interface Props {
+  locale: Locale;
+  kind: "audit" | "contact";
+  /** Package options for the "interest" select (contact form only). */
+  packages?: ReadonlyArray<{ slug: string; name: string }>;
+  class?: string;
+  reveal?: boolean;
+}
+const { locale, kind, packages = [], class: extra, reveal = true } = Astro.props;
+const c = copyFor(locale);
+const f = c.form;
+const id = (name: string) => `${kind}-${name}`;
+const channels =
+  kind === "audit"
+    ? (["line", "email"] as const)
+    : (["line", "phone", "email"] as const);
+const inputFor = {
+  line: { type: "text", inputmode: "text", autocomplete: "off" },
+  phone: { type: "tel", inputmode: "tel", autocomplete: "tel" },
+  email: { type: "email", inputmode: "email", autocomplete: "email" },
+} as const;
+const messages = JSON.stringify(f.err);
+---
+
+<form
+  class:list={["card", "form", extra]}
+  id={`${kind}Form`}
+  action={`/api/${kind}`}
+  method="post"
+  novalidate
+  data-lead={kind}
+  data-messages={messages}
+  data-sending={f.sending}
+  data-reveal={reveal ? "" : undefined}
+  style={reveal ? "--i:1" : undefined}
+  aria-label={kind === "audit" ? f.auditLabel : f.contactLabel}
+>
+  <input type="hidden" name="source" value={kind} />
+  <input type="hidden" name="locale" value={locale} />
+  {
+    kind === "audit" && (
+      <div class="field">
+        <label for={id("url")}>{f.url}</label>
+        <input class="input" id={id("url")} name="url" type="url" inputmode="url" autocomplete="url" placeholder={f.urlPlaceholder} required aria-describedby={id("e-url")} data-field="url" />
+        <p class="error" id={id("e-url")} role="alert" />
+      </div>
+    )
+  }
+  <div class="field">
+    <label for={id("name")}>{f.name} <span class="muted" style="font-weight:400">{f.nameHint}</span></label>
+    <input class="input" id={id("name")} name="name" type="text" autocomplete="nickname" required aria-describedby={id("e-name")} data-field="name" />
+    <p class="error" id={id("e-name")} role="alert"></p>
+  </div>
+  <fieldset class="field">
+    <legend>{kind === "audit" ? f.channelAudit : f.channelContact}</legend>
+    <div class:list={["seg", channels.length === 3 && "seg--3"]}>
+      {
+        channels.map((ch, i) => (
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value={ch}
+              checked={i === 0}
+              data-label={f.contactLabels[ch]}
+              data-channel={f.channels[ch]}
+              data-type={inputFor[ch].type}
+              data-inputmode={inputFor[ch].inputmode}
+              data-autocomplete={inputFor[ch].autocomplete}
+            />
+            {f.channels[ch]}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+  <div class="field">
+    <label for={id("contact")} data-contact-label>{f.contactLabels.line}</label>
+    <input class="input" id={id("contact")} name="contact" type="text" autocapitalize="off" autocomplete="off" required aria-describedby={id("e-contact")} data-field="contact" />
+    <p class="error" id={id("e-contact")} role="alert"></p>
+  </div>
+  {
+    kind === "contact" && (
+      <div class="field">
+        <label for={id("interest")}>{f.interest}</label>
+        <select class="input" id={id("interest")} name="interest" required aria-describedby={id("e-interest")} data-field="interest">
+          {packages.map((p) => <option value={p.slug}>{p.name}</option>)}
+          <option value="unsure" selected>{f.unsure}</option>
+        </select>
+        <p class="error" id={id("e-interest")} role="alert" />
+      </div>
+    )
+  }
+  {
+    kind === "contact" ? (
+      <div class="field">
+        <label for={id("message")}>{f.message} <span class="muted" style="font-weight:400">{f.optional}</span></label>
+        <textarea class="input" id={id("message")} name="message" maxlength="500" rows="4" placeholder={f.messagePlaceholder} />
+      </div>
+    ) : (
+      <div class="field">
+        <label for={id("focus")}>{f.focus} <span class="muted" style="font-weight:400">{f.optional}</span></label>
+        <input class="input" id={id("focus")} name="focus" type="text" maxlength="200" placeholder={f.focusPlaceholder} />
+      </div>
+    )
+  }
+  <input class="hp" type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <div>
+    <label class="consent">
+      <input type="checkbox" id={id("consent")} name="consent" value="yes" required aria-describedby={id("e-consent")} data-field="consent" />
+      <span>{f.consentBefore}<a href={localePath(locale, "privacy")}>{f.consentLink}</a></span>
+    </label>
+    <p class="error" id={id("e-consent")} role="alert"></p>
+  </div>
+  <p class="form__fail" role="alert" tabindex="-1">
+    {f.fail}
+    {contactEmail && <> · <a href={`mailto:${contactEmail}`}>{contactEmail}</a></>}
+  </p>
+  <button class="btn btn--solid btn--block" type="submit">{kind === "audit" ? f.submitAudit : f.submitContact}</button>
+  <p class="hint muted" style="font-size:var(--fs-xs);line-height:1.5;text-align:center">{kind === "audit" ? f.reassureAudit : f.reassureContact}</p>
+
+  <div class="form__done" role="status" tabindex="-1">
+    <span class="tick" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5l3.2 3L14 5.5"></path></svg></span>
+    <h3>{f.doneTitle}</h3>
+    <p class="muted" set:html={f.doneBody.replace("{channel}", `<span data-done-channel>${f.channels.line}</span>`)} />
+    <div><LineButton locale={locale} position="thank-you" label={c.line.faster} /></div>
+  </div>
+</form>
+
+<script>
+  import "@/scripts/forms";
+</script>

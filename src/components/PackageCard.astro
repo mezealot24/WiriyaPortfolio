@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from "astro:content";
+import LineButton from "@/components/LineButton.astro";
+import { slugOf } from "@/i18n/content";
+import { localePath, type Locale } from "@/i18n/locales";
+import { copyFor, formatNumber } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"services">;
+  /** "home" links to the package's scope on /services/; "services" starts the package on /contact/. */
+  context: "home" | "services";
+  index?: number;
+}
+const { locale, entry, context, index = 0 } = Astro.props;
+const c = copyFor(locale);
+const p = entry.data;
+const slug = slugOf(entry.id);
+const href =
+  context === "home" ? `${localePath(locale, "services")}#${slug}` : `${localePath(locale, "contact")}?package=${slug}`;
+const label = context === "home" ? c.services.details : c.services.start;
+---
+
+<article class:list={["card", "pkg", p.featured && "pkg--featured"]} data-reveal style={index ? `--i:${index}` : undefined}>
+  <div>
+    {p.featured && <span class="badge pkg__flag">{c.services.featuredFlag}</span>}
+    <h3>{p.name}</h3>
+    <p class="pkg__desc">{p.tagline}</p>
+  </div>
+  <p class="pkg__price">
+    <span class="from">{c.common.from}</span><span class="num">{formatNumber(p.priceFrom)}</span><span class="unit">{c.common.baht}</span><span class="time">{p.duration}</span>
+  </p>
+  <ul class="checks">
+    {
+      p.highlights.map((line) => (
+        <li>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5l3.2 3L14 5.5" /></svg>
+          {line}
+        </li>
+      ))
+    }
+  </ul>
+  <div class="pkg__foot">
+    <a class:list={["btn", "btn--block", p.featured ? "btn--solid" : "btn--ghost"]} href={href}>{label}</a>
+    <LineButton locale={locale} position={`pkg-${slug}`} label={c.line.askPackage} message={c.line.packageMessage(p.name)} as="link" />
+  </div>
+</article>

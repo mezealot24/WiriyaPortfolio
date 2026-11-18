@@ -1,13 +1,13 @@
 import type { Locale } from "./locales";
 import { en } from "./ui/en";
-import { th, type UiKey } from "./ui/th";
+import { th, type Copy } from "./ui/th";
 
-const dictionaries: Record<Locale, Record<UiKey, string>> = { th, en };
+const dictionaries: Record<Locale, Copy> = { th, en };
 
-/** Returns a translator bound to one locale. */
-export const useTranslations = (locale: Locale) => (key: UiKey): string => dictionaries[locale][key];
+/** All copy for one locale. */
+export const copyFor = (locale: Locale): Copy => dictionaries[locale];
 
-export type Translate = ReturnType<typeof useTranslations>;
+export type { Copy };
 
 const dateFormats: Record<Locale, Intl.DateTimeFormat> = {
   th: new Intl.DateTimeFormat("th-TH", { dateStyle: "long" }),
@@ -15,3 +15,7 @@ const dateFormats: Record<Locale, Intl.DateTimeFormat> = {
 };
 
 export const formatDate = (locale: Locale, date: Date): string => dateFormats[locale].format(date);
+
+/** Numbers are always Latin digits with thousands separators (they render in IBM Plex Mono). */
+export const formatNumber = (value: number, decimals = 0): string =>
+  value.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });

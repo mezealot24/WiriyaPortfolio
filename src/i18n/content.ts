@@ -4,7 +4,7 @@ import type { Locale } from "./locales";
 export type Section = "services" | "work" | "blog";
 type Entry<C extends Section> = CollectionEntry<C>;
 
-/** "th/backoffice-system" -> "backoffice-system". */
+/** "th/launch-site" -> "launch-site". */
 export const slugOf = (id: string): string => id.slice(id.indexOf("/") + 1);
 
 const localeOf = (id: string): string => id.slice(0, id.indexOf("/"));
@@ -17,14 +17,14 @@ export async function entriesFor<C extends Section>(collection: C, locale: Local
   return all.filter((entry) => localeOf(entry.id) === locale && visible(entry));
 }
 
-export async function servicesFor(locale: Locale): Promise<Array<Entry<"services">>> {
+export async function packagesFor(locale: Locale): Promise<Array<Entry<"services">>> {
   const list = await entriesFor("services", locale);
   return list.sort((a, b) => a.data.order - b.data.order);
 }
 
 export async function workFor(locale: Locale): Promise<Array<Entry<"work">>> {
   const list = await entriesFor("work", locale);
-  return list.sort((a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title));
+  return list.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
 export async function postsFor(locale: Locale): Promise<Array<Entry<"blog">>> {

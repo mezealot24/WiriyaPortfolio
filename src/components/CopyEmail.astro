@@ -1,0 +1,17 @@
+---
+import type { Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  email: string;
+}
+const { locale, email } = Astro.props;
+const c = copyFor(locale);
+---
+
+<button class="copy" type="button" data-copy={email} data-copied={c.common.copied} data-failed={c.common.copyFailed}>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 0 1 2-2h9"></path></svg>
+  <span>{email}</span>
+  <span class="copy__state" aria-live="polite"></span>
+</button>

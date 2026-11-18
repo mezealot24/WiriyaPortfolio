@@ -1,15 +1,15 @@
 ---
 import { Font } from "astro:assets";
-import ContactCta from "@/components/ContactCta.astro";
+import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import JsonLd from "@/components/JsonLd.astro";
+import LineBar from "@/components/LineBar.astro";
 import Seo from "@/components/Seo.astro";
 import { localePath, otherLocale, type Locale } from "@/i18n/locales";
-import { useTranslations } from "@/i18n/t";
+import { copyFor } from "@/i18n/t";
 import { professionalService } from "@/lib/schema";
 import "@/styles/tokens.css";
-import "@/styles/components.css";
-import "@/styles/site.css";
+import "@/styles/global.css";
 
 interface Props {
   locale: Locale;
@@ -24,52 +24,51 @@ interface Props {
 }
 
 const { locale, title, description, translation, type = "website", noindex = false, schema = [] } = Astro.props;
-const t = useTranslations(locale);
-const site = Astro.site ?? new URL("https://silicon-warin.vercel.app");
+const c = copyFor(locale);
+const site = Astro.site ?? new URL("https://siliconwarin.com");
 // Without a translation, the language switch leads to the other language's home page.
 const alternate = translation ?? localePath(otherLocale(locale));
-const structured = [professionalService(site, locale, t("site.description")), ...schema];
+const structured = [professionalService(site, locale, c.meta.siteDescription), ...schema];
 ---
 
 <!doctype html>
-<html lang={locale} data-theme="dark">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Hex only here: theme-color is read by browser chrome, which may not support oklch(). -->
+    <meta name="theme-color" content="#FAFAF8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F1214" media="(prefers-color-scheme: dark)" />
     <script is:inline>
-      (() => {
-        let theme = null;
+      /* Theme + JS flag before first paint (no flash). */
+      (function () {
+        var d = document.documentElement;
+        d.classList.add("js");
         try {
-          theme = localStorage.getItem("theme");
-        } catch {}
-        if (theme !== "light" && theme !== "dark") {
-          theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-        }
-        document.documentElement.dataset.theme = theme;
+          var t = localStorage.getItem("sw-theme");
+          if (t === "light" || t === "dark") d.setAttribute("data-theme", t);
+        } catch (e) {}
       })();
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <Font cssVariable="--face-instrument" preload={locale === "en" ? [{ weight: 500 }] : false} />
-    <Font cssVariable="--face-plex-thai" preload={locale === "th" ? [{ weight: 600 }] : false} />
-    <Font cssVariable="--face-newsreader" />
-    <Font cssVariable="--face-jetbrains" />
+    <!-- Preload the H1 weight (Thai + Latin files): the H1 is the LCP element. -->
+    <Font cssVariable="--face-sans" preload={[{ weight: 600 }]} />
+    <Font cssVariable="--face-mono" />
     <Seo locale={locale} title={title} description={description} translation={translation} type={type} noindex={noindex} />
     <JsonLd data={structured} />
   </head>
   <body>
-    <a class="wr-skip" href="#main">{t("a11y.skip")}</a>
-    <Header locale={locale} alternate={alternate} />
+    <a class="skip" href="#main">{c.a11y.skip}</a>
+    <Header locale={locale} />
     <main id="main">
       <slot />
     </main>
-    <ContactCta locale={locale} />
+    <Footer locale={locale} alternate={alternate} />
+    <LineBar locale={locale} />
     <script>
-      import { playPage } from "@/scripts/moves";
-      import { still } from "@/scripts/tempo";
-
-      if (!still()) playPage();
+      import "@/scripts/site";
     </script>
   </body>
 </html>
