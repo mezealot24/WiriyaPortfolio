@@ -1,0 +1,17 @@
+{
+  // Cloudflare Workers, static assets only. `pnpm deploy` runs `astro build && wrangler deploy`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "silicon-warin",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Serves the nearest 404.html (dist/404.html) with a 404 status.
+    "not_found_handling": "404-page",
+    // Astro builds with trailingSlash: "always", so /about redirects to /about/.
+    "html_handling": "auto-trailing-slash"
+  }
+  // TODO(form handler): add "main": "worker/index.ts" plus "run_worker_first": ["/api/*"] under "assets",
+  // and implement POST /api/contact and /api/audit in that Worker: validate again, check the honeypot
+  // (company_website) and Turnstile, rate-limit, write to the Notion database (token as a secret:
+  // `wrangler secret put NOTION_TOKEN`), send a LINE/email alert, return JSON (or a 303 redirect for non-JS posts).
+}
