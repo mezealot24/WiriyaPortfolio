@@ -1,0 +1,27 @@
+# TODO(owner): prices are assumptions; keep in sync with th/custom-system.yaml.
+name: Custom System
+tagline: A back office or web app built around your workflow
+order: 3
+priceFrom: 80000
+priceNote: Typical projects 80,000–250,000+ THB
+duration: 2-week milestones
+fit: Businesses outgrowing Excel, LINE groups or paper for customers, stock, quotes or bookings
+highlights:
+  - 1-week Discovery before a fixed quote
+  - Login + roles, tables/search/export
+  - Fitted to how you actually work
+  - LINE integration (LIFF / notifications)
+includes:
+  - "Discovery: workflow map, scope, priorities and a fixed quote"
+  - A web app (e.g. Next.js + Postgres) with login and role-based access, tables, search, filters and export
+  - Fitted to your real workflow, not a template
+  - LINE integration (LIFF / LINE notifications) within scope
+  - Staging + production, database backups, user docs, 1 hour of training
+  - 30–60 days of support
+excludes:
+  - Full accounting/tax systems
+  - Native mobile apps
+  - Integrating undocumented third-party APIs
+  - Monthly hosting/infrastructure (your own account, roughly 0–1,500 THB/month)
+  - Scope changes mid-project (handled as change requests)
+note: Starts with a 1-week Discovery (about 8,000–15,000 THB, credited if we continue)

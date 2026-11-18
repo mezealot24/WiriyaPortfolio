@@ -1,0 +1,26 @@
+# TODO(owner): prices are [ASSUMPTION] in site-structure.md §3 (Launch Site 25,000–45,000). Confirm before launch.
+name: Launch Site
+tagline: เว็บธุรกิจ SEO พร้อมขึ้น Google
+order: 1
+priceFrom: 25000
+duration: 2–3 สัปดาห์
+fit: ธุรกิจที่ยังไม่มีเว็บ หรือเว็บเก่าช้า/ไม่มีใครหาเจอ ต้องการเว็บมืออาชีพเร็ว ๆ
+highlights:
+  - เว็บ 5–7 หน้า responsive ทุกอุปกรณ์
+  - SEO พื้นฐาน + Local Business schema
+  - ตั้ง Search Console + GA4 ให้
+  - ฟอร์มติดต่อ + ปุ่ม LINE
+includes:
+  - เว็บ 5–7 หน้า (Home, บริการ, เกี่ยวกับ, ผลงาน/รีวิว, ติดต่อ) responsive ทุกอุปกรณ์
+  - Astro บน Cloudflare Workers เร็ว มี SSL และ CDN
+  - "SEO พื้นฐาน: title/meta, heading structure, sitemap, robots, Open Graph, Local Business schema"
+  - ตั้ง Google Search Console + GA4 + Google Business Profile ให้ลิงก์กัน
+  - ฟอร์มติดต่อ + ปุ่ม LINE
+  - Content ในรูปแบบแก้ไขง่าย (Markdown) + คู่มือ 1 หน้า
+  - แก้ไขหลังส่งงาน 14 วัน
+excludes:
+  - เขียนเนื้อหาทั้งหมดแทน (มี add-on)
+  - ถ่ายภาพ/โลโก้
+  - e-commerce/ระบบชำระเงิน
+  - ระบบ login สมาชิก
+  - หน้าเกิน 7 หน้า (เพิ่มหน้าละ ~2,000–3,500 บาท)

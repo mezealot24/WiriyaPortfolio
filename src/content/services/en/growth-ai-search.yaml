@@ -1,0 +1,29 @@
+# TODO(owner): prices are assumptions; keep in sync with th/growth-ai-search.yaml.
+name: Growth + AI Search
+tagline: Website + in-depth SEO + AEO/GEO + LINE OA
+order: 2
+priceFrom: 55000
+duration: 4–6 weeks
+fit: Businesses competing on Google and AI search, such as dealers and service businesses that need a steady flow of leads
+featured: true
+highlights:
+  - Everything in Launch Site
+  - Migration with a 301 redirect map
+  - In-depth schema, llms.txt (AEO/GEO)
+  - LINE OA integration + 30-day report
+includes:
+  - Everything in Launch Site
+  - Thai keyword & page mapping + intent-based URL structure
+  - Migration from your old site (e.g. WordPress) with a 301 redirect map to keep rankings
+  - "SEO-tuned core content: up to 10 pages (landing/product/model/service)"
+  - In-depth schema (Organization, Service/Product, FAQPage, BreadcrumbList), llms.txt and AI-citable content structure (AEO/GEO)
+  - Mobile Core Web Vitals tuning
+  - "LINE OA integration: button/QR, LINE click tracking, starter greeting/rich menu"
+  - "Search Console report: baseline + a 30-day post-launch report with recommendations"
+  - 30 days of support
+excludes:
+  - Guaranteed rankings or traffic
+  - Ongoing article writing (add-on)
+  - Google Ads/Meta Ads
+  - Link building
+  - Login/back office (see Custom System)

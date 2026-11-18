@@ -1,0 +1,29 @@
+# TODO(owner): prices are [ASSUMPTION] in site-structure.md §3 (Growth + AI Search 55,000–95,000). Confirm before launch.
+name: Growth + AI Search
+tagline: เว็บ + SEO เชิงลึก + AEO/GEO + LINE OA
+order: 2
+priceFrom: 55000
+duration: 4–6 สัปดาห์
+fit: ธุรกิจที่แข่งกันบน Google/AI search เช่น ดีลเลอร์ ธุรกิจบริการ ที่ต้องการ lead สม่ำเสมอ
+featured: true
+highlights:
+  - ทุกอย่างใน Launch Site
+  - ย้ายจากเว็บเดิม พร้อม 301 redirect map
+  - Schema เชิงลึก, llms.txt (AEO/GEO)
+  - เชื่อม LINE OA + รายงาน 30 วันหลัง launch
+includes:
+  - ทุกอย่างใน Launch Site
+  - Keyword & page mapping (ภาษาไทย) + โครง URL ที่วางตาม intent
+  - ย้ายจากเว็บเดิม (เช่น WordPress) พร้อม 301 redirect map รักษา ranking
+  - "เนื้อหาหน้าหลักที่ปรับตาม SEO: สูงสุด 10 หน้า (landing/สินค้า/รุ่น/บริการ)"
+  - Schema เชิงลึก (Organization, Service/Product, FAQPage, BreadcrumbList), llms.txt และโครงเนื้อหาให้ AI อ้างอิงได้ (AEO/GEO)
+  - Core Web Vitals tuning บนมือถือ
+  - "เชื่อม LINE OA: ปุ่ม/QR, tracking การคลิก LINE, ข้อความต้อนรับ/rich menu ตั้งต้น"
+  - "รายงาน Search Console: baseline + รายงาน 30 วันหลัง launch พร้อมข้อเสนอแนะ"
+  - Support 30 วัน
+excludes:
+  - การันตีอันดับ/ปริมาณ traffic
+  - เขียนบทความต่อเนื่อง (add-on)
+  - Google Ads/Meta Ads
+  - Link building
+  - ระบบ login/หลังบ้าน (ดู Custom System)
