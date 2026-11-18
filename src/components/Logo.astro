@@ -1,0 +1,19 @@
+---
+// Chip-die mark (pin-1 notch + rising trace) with the wordmark. Outline follows currentColor, trace the accent.
+interface Props {
+  href: string;
+  label: string;
+  size?: number;
+  showBy?: boolean;
+}
+const { href, label, size = 28, showBy = true } = Astro.props;
+---
+
+<a class="brand" href={href} aria-label={label}>
+  <svg class="brand__mark" width={size} height={size} viewBox="0 0 28 28" fill="none" aria-hidden="true">
+    <path d="M9 2.75h14A2.25 2.25 0 0 1 25.25 5v18A2.25 2.25 0 0 1 23 25.25H5A2.25 2.25 0 0 1 2.75 23V9z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+    <path class="trace" d="M7.5 19.5l4.5-4 3.5 2 5-7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"></path>
+    <circle class="dot" cx="20.5" cy="10.5" r="1.9"></circle>
+  </svg>
+  <span class="brand__name">Silicon Warin{showBy && <span class="brand__by">by Wiriya</span>}</span>
+</a>

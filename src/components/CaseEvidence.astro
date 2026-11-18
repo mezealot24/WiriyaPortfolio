@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Chart from "@/components/Chart.astro";
+import MetricValue from "@/components/MetricValue.astro";
+import type { Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"work">;
+}
+const { locale, entry } = Astro.props;
+const c = copyFor(locale);
+const { metrics, highlight, chart } = entry.data;
+const tiles = highlight.map((key) => metrics.find((m) => m.key === key)).filter((m) => m !== undefined);
+---
+
+<div class="case__panel">
+  {chart && <Chart unit={chart.unit} marker={chart.marker} alt={chart.alt} note={c.common.illustrative} />}
+  <dl class="tiles">
+    {
+      tiles.map((m) => (
+        <div class="metric">
+          <dt class="metric__label" set:html={m.stripLabel ?? m.label} />
+          <MetricValue value={m.value} decimals={m.decimals} prefix={m.prefix} suffix={m.suffix} accent={m.accent} />
+        </div>
+      ))
+    }
+  </dl>
+</div>

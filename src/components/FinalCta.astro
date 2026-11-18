@@ -1,0 +1,33 @@
+---
+import CopyEmail from "@/components/CopyEmail.astro";
+import LineButton from "@/components/LineButton.astro";
+import { localePath, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+import { contactEmail } from "@/site";
+
+interface Props {
+  locale: Locale;
+  title: string;
+  sub: string;
+  /** Secondary action. Defaults to the contact form. */
+  secondary?: { href: string; label: string };
+  line?: string;
+}
+const { locale, title, sub, secondary, line } = Astro.props;
+const c = copyFor(locale);
+const second = secondary ?? { href: localePath(locale, "contact"), label: c.common.sendForm };
+---
+
+<section class="section" style="padding-top:0" aria-labelledby="h-final">
+  <div class="container">
+    <div class="final" id="finalCta" data-reveal data-bar-stop>
+      <h2 id="h-final">{title}</h2>
+      <p>{sub}</p>
+      <div class="final__cta">
+        <LineButton locale={locale} position="final" label={line ?? c.line.addFriend} magnetic />
+        <a class="btn btn--ghost" href={second.href}>{second.label}</a>
+      </div>
+      {contactEmail && <CopyEmail locale={locale} email={contactEmail} />}
+    </div>
+  </div>
+</section>

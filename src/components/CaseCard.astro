@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+import CaseEvidence from "@/components/CaseEvidence.astro";
+import { slugOf } from "@/i18n/content";
+import { localePath, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"work">;
+  /** Heading id, so the section can be labelled by it. */
+  id: string;
+  level?: "h2" | "h3";
+}
+const { locale, entry, id, level = "h2" } = Astro.props;
+const c = copyFor(locale);
+const Heading = level;
+const href = localePath(locale, `work/${slugOf(entry.id)}`);
+const pending = entry.data.clientVisibility !== "named";
+---
+
+<article class="card case" data-reveal>
+  <div class="case__body">
+    <div class="case__tags">
+      {entry.data.tags.map((tag) => <span class="badge">{tag}</span>)}
+      {pending && <span class="badge badge--notice">{c.common.pending}</span>}
+    </div>
+    <p class="eyebrow">{c.common.caseEyebrow} · <span class="th">{entry.data.industry}</span></p>
+    <Heading id={id} set:html={entry.data.titleHtml ?? entry.data.title} />
+    <p>{entry.data.summary}</p>
+    <a class="link case__more" href={href}>{c.common.readCase} <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+  <CaseEvidence locale={locale} entry={entry} />
+</article>

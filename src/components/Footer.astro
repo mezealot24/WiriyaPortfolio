@@ -1,0 +1,49 @@
+---
+import Logo from "@/components/Logo.astro";
+import { localePath, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+import { contactEmail, lineHref, lineUrl } from "@/site";
+
+interface Props {
+  locale: Locale;
+  /** This page in the other language, or that language's home. */
+  alternate: string;
+}
+
+const { locale, alternate } = Astro.props;
+const c = copyFor(locale);
+const here = Astro.url.pathname;
+const year = new Date().getFullYear();
+const links = [
+  ["services", c.nav.services],
+  ["work", c.nav.work],
+  ["about", c.nav.about],
+  ["insights", c.nav.insights],
+  ["audit", c.nav.audit],
+  ["contact", c.nav.contact],
+] as const;
+const langHref = (target: "th" | "en") => (target === locale ? here : alternate);
+---
+
+<footer class="footer">
+  <div class="container footer__in">
+    <div>
+      <Logo href={localePath(locale)} label={c.a11y.homeLink} size={24} showBy={false} />
+      <p style="margin-top:var(--space-2);max-width:30em;line-height:1.6">{c.footer.about}</p>
+      {contactEmail && <p class="footer__mail mono"><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>}
+    </div>
+    <nav class="footer__links" aria-label={c.a11y.footerNav}>
+      {links.map(([path, label]) => <a href={localePath(locale, path)}>{label}</a>)}
+      {lineUrl && <a href={lineHref(locale)} data-line="footer" rel="noopener">{c.nav.lineOa}</a>}
+      <a href={localePath(locale, "privacy")}>{c.nav.privacy}</a>
+    </nav>
+    <div class="footer__base">
+      <span>© {year} Silicon Warin · {c.footer.built}</span>
+      <span class="mono lang" role="group" aria-label={c.a11y.language}>
+        <a href={langHref("th")} lang="th" hreflang="th" aria-current={locale === "th" ? "true" : undefined}>TH</a>
+        <span aria-hidden="true">/</span>
+        <a href={langHref("en")} lang="en" hreflang="en" aria-current={locale === "en" ? "true" : undefined}>EN</a>
+      </span>
+    </div>
+  </div>
+</footer>

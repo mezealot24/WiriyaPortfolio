@@ -1,0 +1,21 @@
+---
+interface Props {
+  label: string;
+  items: ReadonlyArray<{ name: string; path: string }>;
+}
+const { label, items } = Astro.props;
+---
+
+<nav class="crumbs" aria-label={label}>
+  <ol>
+    {
+      items.map((item, i) =>
+        i === items.length - 1 ? (
+          <li><span aria-current="page">{item.name}</span></li>
+        ) : (
+          <li><a href={item.path}>{item.name}</a></li>
+        ),
+      )
+    }
+  </ol>
+</nav>

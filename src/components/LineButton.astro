@@ -1,0 +1,46 @@
+---
+import type { Locale } from "@/i18n/locales";
+import { lineHref } from "@/site";
+
+interface Props {
+  locale: Locale;
+  /** Click-tracking position, e.g. "hero", "header", "pkg-launch-site". */
+  position: string;
+  label: string;
+  /** Pre-filled chat text; used once PUBLIC_LINE_ID is set. */
+  message?: string;
+  /** "link" renders the tertiary text-link style used under package cards. */
+  as?: "button" | "link";
+  size?: "md" | "sm";
+  block?: boolean;
+  magnetic?: boolean;
+  icon?: boolean;
+  class?: string;
+}
+
+const { locale, position, label, message, as = "button", size = "md", block = false, magnetic = false, icon = true, class: extra } = Astro.props;
+const href = lineHref(locale, message);
+const external = href.startsWith("http");
+const classes =
+  as === "link"
+    ? ["link", extra]
+    : ["btn", "btn--line", size === "sm" && "btn--sm", block && "btn--block", extra];
+---
+
+<a
+  class:list={classes}
+  href={href}
+  data-line={position}
+  data-magnetic={magnetic ? "" : undefined}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener" : undefined}
+>
+  {
+    as === "button" && icon && (
+      <svg width={size === "sm" ? 18 : 20} height={size === "sm" ? 18 : 20} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 3.5c-5 0-9 3.3-9 7.4 0 3.6 3.1 6.6 7.3 7.3.5.1.7.3.6.8l-.2 1.4c0 .4.2.6.6.4 1.9-1 6.1-3.6 8.1-6 1-1.2 1.6-2.5 1.6-3.9 0-4.1-4-7.4-9-7.4z" />
+      </svg>
+    )
+  }
+  {label}
+</a>

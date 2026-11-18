@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import MetricValue from "@/components/MetricValue.astro";
+import { slugOf } from "@/i18n/content";
+import { localePath, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+
+interface Props {
+  locale: Locale;
+  entry: CollectionEntry<"work">;
+}
+const { locale, entry } = Astro.props;
+const c = copyFor(locale);
+const { metrics, proof } = entry.data;
+const tiles = proof.map((key) => metrics.find((m) => m.key === key)).filter((m) => m !== undefined);
+const href = localePath(locale, `work/${slugOf(entry.id)}`);
+---
+
+<div class="proof" aria-labelledby="h-proof">
+  <div class="proof__meta" data-reveal>
+    <h2 class="eyebrow eyebrow--th" id="h-proof" style="margin:0">{c.home.proofTitle}</h2>
+    {entry.data.clientVisibility !== "named" && <span class="badge badge--notice">{c.common.pending}</span>}
+  </div>
+  <dl class="proof__grid" data-reveal style="--i:1">
+    {
+      tiles.map((m) => (
+        <div class="metric">
+          <dt class="metric__label" set:html={m.stripLabel ?? m.label} />
+          <MetricValue value={m.value} decimals={m.decimals} prefix={m.prefix} suffix={m.suffix} accent={m.accent} />
+        </div>
+      ))
+    }
+    <div class="metric">
+      <dt class="metric__label">{c.home.proofMove}</dt>
+      <dd class="metric__value metric__value--text">
+        <span class="muted">WordPress</span><span class="mono" aria-hidden="true">→</span><span class="sr-only">{c.a11y.to}</span><span>Cloudflare Workers</span>
+      </dd>
+    </div>
+  </dl>
+  <p class="proof__cap">
+    <span>{c.home.proofCaption}</span>
+    <a class="link" href={href}>{c.home.proofLink} <span class="arrow" aria-hidden="true">→</span></a>
+  </p>
+</div>

@@ -1,0 +1,16 @@
+---
+import { formatNumber } from "@/i18n/t";
+
+interface Props {
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  accent?: boolean;
+}
+const { value, decimals = 0, prefix = "", suffix = "", accent = false } = Astro.props;
+---
+
+<dd class:list={["metric__value", accent && "metric__value--accent"]}>
+  {prefix}<span data-count={value} data-decimals={decimals || undefined}>{formatNumber(value, decimals)}</span>{suffix}
+</dd>
