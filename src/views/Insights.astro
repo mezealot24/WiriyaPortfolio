@@ -1,0 +1,66 @@
+---
+import FinalCta from "@/components/FinalCta.astro";
+import PageHero from "@/components/PageHero.astro";
+import Base from "@/layouts/Base.astro";
+import { postsFor, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { copyFor, formatDate } from "@/i18n/t";
+import { breadcrumbs, page } from "@/lib/schema";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = copyFor(locale);
+const k = c.insights;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const path = localePath(locale, "insights");
+const posts = await postsFor(locale);
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.insights, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={k.title}
+  description={k.description}
+  translation={localePath(otherLocale(locale), "insights")}
+  schema={[page(site, locale, "CollectionPage", path, k.title, k.description), breadcrumbs(site, crumbs)]}
+>
+  <PageHero id="h-page" eyebrow={k.eyebrow} title={k.h1} sub={k.sub} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb} />
+  <section class="section" style="padding-top:var(--space-5)">
+    <div class="container">
+      {
+        posts.length > 0 ? (
+          <ul class="posts" style="max-width:var(--container-narrow)">
+            {posts.map((post) => (
+              <li>
+                <a href={localePath(locale, `insights/${slugOf(post.id)}`)}>
+                  <time datetime={post.data.pubDate.toISOString()}>{formatDate(locale, post.data.pubDate)}</time>
+                  <h2>{post.data.title}</h2>
+                  <p class="muted">{post.data.summary}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="card stack" style="max-width:var(--container-narrow)" data-reveal>
+            <h2 style="font-size:var(--fs-lg)">{k.emptyTitle}</h2>
+            <p class="muted">{k.emptyBody}</p>
+            <ol class="planned">
+              {k.planned.map((topic, i) => (
+                <li>
+                  <span class="n">{String(i + 1).padStart(2, "0")}</span>
+                  <span>{topic}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )
+      }
+    </div>
+  </section>
+  <FinalCta locale={locale} title={k.ctaTitle} sub={k.ctaSub} line={c.line.talk} secondary={{ href: localePath(locale, "audit"), label: c.services.auditCta }} />
+</Base>

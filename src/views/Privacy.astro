@@ -1,0 +1,53 @@
+---
+import PageHero from "@/components/PageHero.astro";
+import Base from "@/layouts/Base.astro";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+import { breadcrumbs, page } from "@/lib/schema";
+import { contactEmail, lineHref, lineUrl } from "@/site";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = copyFor(locale);
+const p = c.privacy;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const path = localePath(locale, "privacy");
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.privacy, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={p.title}
+  description={p.description}
+  translation={localePath(otherLocale(locale), "privacy")}
+  schema={[page(site, locale, "WebPage", path, p.title, p.description), breadcrumbs(site, crumbs)]}
+>
+  <PageHero id="h-page" eyebrow={p.eyebrow} title={p.h1} sub={p.updated} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb} />
+  <section class="section" style="padding-top:var(--space-5)">
+    <div class="container">
+      <div class="prose">
+        {
+          p.sections.map((s) => (
+            <>
+              <h2>{s.h}</h2>
+              {s.list && <ul>{s.list.map((li) => <li>{li}</li>)}</ul>}
+              {s.p?.map((para) => <p>{para}</p>)}
+            </>
+          ))
+        }
+        <p>
+          <strong>{p.contactLine}</strong>{" "}
+          {contactEmail && <a href={`mailto:${contactEmail}`}>{contactEmail}</a>}
+          {contactEmail && lineUrl && " · "}
+          {lineUrl && <a href={lineHref(locale)}>LINE OA</a>}
+          {!contactEmail && !lineUrl && <a href={localePath(locale, "contact")}>{c.nav.contact}</a>}
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,197 @@
+---
+import Checks from "@/components/Checks.astro";
+import Faq from "@/components/Faq.astro";
+import FinalCta from "@/components/FinalCta.astro";
+import LineButton from "@/components/LineButton.astro";
+import PackageCard from "@/components/PackageCard.astro";
+import PageHero from "@/components/PageHero.astro";
+import Base from "@/layouts/Base.astro";
+import { packagesFor, slugOf } from "@/i18n/content";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { copyFor, formatNumber } from "@/i18n/t";
+import { breadcrumbs, faqPage, packageCatalog } from "@/lib/schema";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = copyFor(locale);
+const s = c.services;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const path = localePath(locale, "services");
+const packages = await packagesFor(locale);
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.services, path },
+];
+const catalog = packages.map((p) => ({
+  slug: slugOf(p.id),
+  name: p.data.name,
+  description: p.data.tagline,
+  priceFrom: p.data.priceFrom,
+}));
+---
+
+<Base
+  locale={locale}
+  title={s.title}
+  description={s.description}
+  translation={localePath(otherLocale(locale), "services")}
+  schema={[packageCatalog(site, locale, path, s.h1, catalog), faqPage(c.faq), breadcrumbs(site, crumbs)]}
+>
+  <PageHero id="h-page" eyebrow={s.eyebrow} title={s.h1} sub={s.sub} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb}>
+    <div class="hero__cta" data-reveal style="--i:3">
+      <a class="btn btn--ghost" href="#packages">{s.toPackages} <span class="arrow" aria-hidden="true">↓</span></a>
+    </div>
+  </PageHero>
+
+  <!-- Package cards -->
+  <section class="section section--tint" id="packages" aria-label={s.toPackages}>
+    <div class="container">
+      <div class="grid grid--3">
+        {packages.map((entry, i) => <PackageCard locale={locale} entry={entry} context="services" index={i} />)}
+      </div>
+      <p class="price-note" data-reveal><span>{c.common.priceNote}</span></p>
+    </div>
+  </section>
+
+  <!-- Full scope per package -->
+  <section class="section" aria-labelledby="h-scope">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">{s.detailEyebrow}</p>
+        <h2 id="h-scope">{s.detailTitle}</h2>
+      </div>
+      <div>
+        {
+          packages.map((entry) => {
+            const p = entry.data;
+            const slug = slugOf(entry.id);
+            return (
+              <article class="pkg-detail" id={slug} aria-labelledby={`h-${slug}`} data-reveal>
+                <div class="pkg-detail__head">
+                  {p.featured && <span class="badge badge--accent" style="justify-self:start">{s.featuredFlag}</span>}
+                  <h3 id={`h-${slug}`} style="font-size:var(--fs-lg)">{p.name}</h3>
+                  <p class="muted">{p.tagline}</p>
+                  <p class="pkg-detail__price">
+                    {c.common.from} <span class="num">{formatNumber(p.priceFrom)}</span> {c.common.baht} · {p.duration}
+                  </p>
+                  {p.priceNote && <p class="pkg-detail__price">{p.priceNote}</p>}
+                  <div style="margin-top:var(--space-3);display:grid;gap:var(--space-1);justify-items:start">
+                    <a class:list={["btn", "btn--sm", p.featured ? "btn--solid" : "btn--ghost"]} href={`${localePath(locale, "contact")}?package=${slug}`}>{s.start}</a>
+                    <LineButton locale={locale} position={`scope-${slug}`} label={c.line.askPackage} message={c.line.packageMessage(p.name)} as="link" />
+                  </div>
+                </div>
+                <div class="stack">
+                  <p><strong>{s.fit}:</strong> <span class="muted">{p.fit}</span></p>
+                  <div class="cols">
+                    <div>
+                      <h4 class="eyebrow eyebrow--th">{s.includes}</h4>
+                      <Checks items={p.includes} />
+                    </div>
+                    {p.excludes.length > 0 && (
+                      <div>
+                        <h4 class="eyebrow eyebrow--th">{s.excludes}</h4>
+                        <ul class="cross">{p.excludes.map((line) => <li>{line}</li>)}</ul>
+                      </div>
+                    )}
+                  </div>
+                  {p.note && <p class="muted" style="font-size:var(--fs-sm)">{p.note}</p>}
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="section section--tint" id="compare" aria-labelledby="h-compare">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">{s.compareEyebrow}</p>
+        <h2 id="h-compare">{s.compareTitle}</h2>
+      </div>
+      <div class="table-wrap" data-reveal tabindex="0" role="region" aria-labelledby="h-compare">
+        <table class="compare">
+          <caption class="sr-only">{s.compareCaption}</caption>
+          <thead>
+            <tr>
+              <td></td>
+              {packages.map((p) => <th scope="col" class:list={[p.data.featured && "is-featured"]}>{p.data.name}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{s.comparePrice}</th>
+              {packages.map((p) => <td><span class="muted">{c.common.from}</span> <span class="num">{formatNumber(p.data.priceFrom)}</span></td>)}
+            </tr>
+            {
+              s.compareRows.map((row) => (
+                <tr>
+                  <th scope="row">{row.label}</th>
+                  {row.values.map((v) => <td class:list={[v === "—" && "dash"]}>{v}</td>)}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="table-note">{s.tableNote}</p>
+    </div>
+  </section>
+
+  <!-- Add-ons + unsure -->
+  <section class="section" aria-labelledby="h-addons">
+    <div class="container split">
+      <div data-reveal>
+        <p class="eyebrow">{s.addonsEyebrow}</p>
+        <h2 id="h-addons" style="margin-bottom:var(--space-5)">{s.addonsTitle}</h2>
+        <ul class="addons">
+          {s.addons.map((a) => <li><span>{a.name}</span><span class="price">{a.price}</span></li>)}
+        </ul>
+        <LineButton locale={locale} position="addons" label={s.addonsAsk} as="link" />
+      </div>
+      <div class="card stack" data-reveal style="--i:1">
+        <h2 style="font-size:var(--fs-lg)">{s.unsureTitle}</h2>
+        <p class="muted">{s.unsureBody}</p>
+        <div><a class="btn btn--ghost" href={localePath(locale, "audit")}>{s.auditCta} <span class="arrow" aria-hidden="true">→</span></a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process + timeline -->
+  <section class="section section--tint" aria-labelledby="h-process">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">Process</p>
+        <h2 id="h-process">{s.processTitle}</h2>
+        <p>{s.processSub}</p>
+      </div>
+      <ol class="steps">
+        {
+          c.process.map((step, i) => (
+            <li class="step" data-reveal style={i ? `--i:${i}` : undefined}>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" aria-labelledby="h-faq">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">FAQ</p>
+        <h2 id="h-faq">{s.faqTitle}</h2>
+      </div>
+      <Faq items={c.faq} />
+    </div>
+  </section>
+
+  <FinalCta locale={locale} title={s.finalTitle} sub={s.finalSub} line={c.line.talk} />
+</Base>

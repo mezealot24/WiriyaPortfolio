@@ -1,40 +1,118 @@
 ---
-import Wordmark from "@/components/Wordmark.astro";
+import FinalCta from "@/components/FinalCta.astro";
+import PageHero from "@/components/PageHero.astro";
 import Base from "@/layouts/Base.astro";
 import { localePath, otherLocale, type Locale } from "@/i18n/locales";
-import { useTranslations } from "@/i18n/t";
+import { copyFor } from "@/i18n/t";
+import { breadcrumbs, page, person } from "@/lib/schema";
 
 interface Props {
   locale: Locale;
 }
-
 const { locale } = Astro.props;
-const t = useTranslations(locale);
-const why = ["about.why1", "about.why2", "about.why3"] as const;
-const limits = ["about.limit1", "about.limit2"] as const;
+const c = copyFor(locale);
+const a = c.about;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const path = localePath(locale, "about");
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.about, path },
+];
 ---
 
 <Base
   locale={locale}
-  title={t("about.metaTitle")}
-  description={t("about.metaDescription")}
+  title={a.title}
+  description={a.description}
   translation={localePath(otherLocale(locale), "about")}
+  schema={[page(site, locale, "AboutPage", path, a.title, a.description), person(site, locale), breadcrumbs(site, crumbs)]}
 >
-  <div class="wr-container">
-    <section class="wr-hero">
-      <Wordmark byline />
-      <h1 class="wr-hero__title" data-rise>
-        <span class="wr-line"><span>{t("about.headlineLine1")}</span></span>
-        <span class="wr-line"><span>{t("about.headlineLine2")}</span></span>
-      </h1>
-      <p class="wr-hero__lead" data-reveal>{t("about.lead")}</p>
-    </section>
+  <!-- TODO(owner): add a real photo (AVIF/WebP, explicit width/height) beside the intro when ready. -->
+  <PageHero id="h-page" eyebrow={a.eyebrow} title={a.h1} sub={a.intro} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb} />
 
-    <div class="wr-prose wr-section" data-reveal>
-      <h2>{t("about.whyTitle")}</h2>
-      <ul>{why.map((key) => <li>{t(key)}</li>)}</ul>
-      <h2>{t("about.limitsTitle")}</h2>
-      <ul>{limits.map((key) => <li>{t(key)}</li>)}</ul>
+  <section class="section section--tint" aria-labelledby="h-angle">
+    <div class="container split">
+      <div data-reveal>
+        <p class="eyebrow">{a.angleEyebrow}</p>
+        <h2 id="h-angle">{a.angleTitle}</h2>
+      </div>
+      <div class="stack lead" data-reveal style="--i:1">
+        {a.angleBody.map((p) => <p>{p}</p>)}
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-path">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">{a.pathEyebrow}</p>
+        <h2 id="h-path">{a.pathTitle}</h2>
+      </div>
+      <ol class="timeline" data-reveal>
+        {
+          a.path.map((step) => (
+            <li>
+              <span class="when">{step.when}</span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="h-principles">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">{a.principlesEyebrow}</p>
+        <h2 id="h-principles">{a.principlesTitle}</h2>
+      </div>
+      <ul class="why">
+        {
+          a.principles.map((item) => (
+            <li class="why__item" data-reveal>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-label={`${a.doTitle} / ${a.dontTitle}`}>
+    <div class="container split">
+      <div class="dolist" data-reveal>
+        <div class="card">
+          <h2 style="font-size:var(--fs-md);margin-bottom:var(--space-3)">{a.doTitle}</h2>
+          <ul class="checks">
+            {
+              a.do.map((line) => (
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5l3.2 3L14 5.5" /></svg>
+                  {line}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="card">
+          <h2 style="font-size:var(--fs-md);margin-bottom:var(--space-3)">{a.dontTitle}</h2>
+          <ul class="cross">{a.dont.map((line) => <li>{line}</li>)}</ul>
+        </div>
+      </div>
+      <div data-reveal style="--i:1">
+        <p class="eyebrow">{a.stackEyebrow}</p>
+        <h2 style="font-size:var(--fs-lg);margin-bottom:var(--space-4)">{a.stackTitle}</h2>
+        <ul class="stackline">
+          {a.stack.map((group) => <li>{group.map((item) => <span class="badge">{item}</span>)}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta locale={locale} title={a.ctaTitle} sub={a.ctaSub} line={c.line.talk} />
 </Base>

@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
-import ServiceDetail from "@/views/ServiceDetail.astro";
+import InsightPost from "@/views/InsightPost.astro";
 import { pathsFor } from "@/i18n/content";
 
-export const getStaticPaths = (() => pathsFor("services", "en")) satisfies GetStaticPaths;
+export const getStaticPaths = (() => pathsFor("blog", "th")) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { entry } = Astro.props as Props;
 ---
 
-<ServiceDetail locale="en" entry={entry} />
+<InsightPost locale="th" entry={entry} />

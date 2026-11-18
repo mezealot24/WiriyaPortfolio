@@ -1,0 +1,82 @@
+---
+import Checks from "@/components/Checks.astro";
+import Faq from "@/components/Faq.astro";
+import FinalCta from "@/components/FinalCta.astro";
+import LeadForm from "@/components/LeadForm.astro";
+import PageHero from "@/components/PageHero.astro";
+import Base from "@/layouts/Base.astro";
+import { localePath, otherLocale, type Locale } from "@/i18n/locales";
+import { copyFor } from "@/i18n/t";
+import { breadcrumbs, faqPage, freeService, page } from "@/lib/schema";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = copyFor(locale);
+const a = c.audit;
+const site = Astro.site ?? new URL("https://siliconwarin.com");
+const path = localePath(locale, "audit");
+const crumbs = [
+  { name: c.nav.home, path: localePath(locale) },
+  { name: c.nav.audit, path },
+];
+---
+
+<Base
+  locale={locale}
+  title={a.title}
+  description={a.description}
+  translation={localePath(otherLocale(locale), "audit")}
+  schema={[
+    page(site, locale, "WebPage", path, a.title, a.description),
+    freeService(site, locale, path, "Website Audit", a.description),
+    faqPage(a.faq),
+    breadcrumbs(site, crumbs),
+  ]}
+>
+  <PageHero id="h-page" eyebrow={a.eyebrow} title={a.h1} sub={a.sub} crumbs={crumbs} crumbsLabel={c.a11y.breadcrumb} />
+
+  <section class="section section--tint" aria-labelledby="h-covers">
+    <div class="container audit">
+      <div data-reveal>
+        <h2 id="h-covers">{a.coversTitle}</h2>
+        <Checks items={a.covers} class="audit__list" />
+        <p class="muted" style="margin-top:var(--space-5);font-size:var(--fs-sm)">{a.terms}</p>
+        <!-- TODO(owner): add a blurred/shortened sample report image here (site-structure.md §2.6 row 4). -->
+      </div>
+      <LeadForm locale={locale} kind="audit" />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-steps">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">Process</p>
+        <h2 id="h-steps">{a.stepsTitle}</h2>
+      </div>
+      <ol class="steps">
+        {
+          a.steps.map((step, i) => (
+            <li class="step" data-reveal style={i ? `--i:${i}` : undefined}>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--tint" aria-labelledby="h-faq">
+    <div class="container">
+      <div class="section__head" data-reveal>
+        <p class="eyebrow">FAQ</p>
+        <h2 id="h-faq">{a.faqTitle}</h2>
+      </div>
+      <Faq items={a.faq} name="audit-faq" />
+    </div>
+  </section>
+
+  <FinalCta locale={locale} title={c.home.finalTitle} sub={c.home.finalSub} />
+</Base>
